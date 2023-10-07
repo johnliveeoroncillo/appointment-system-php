@@ -8,15 +8,25 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.jsx',
+        'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
+        "./node_modules/tw-elements/dist/js/**/*.js"
     ],
 
     theme: {
         extend: {
+            colors:{
+                primaryColor: 'rgb(19 78 74)',
+                secondaryColor: 'rgb(13 148 136)',
+                bgColor: '#EEEEEE',
+                textColor: '#F9F9F9',
+                darkText: '#191919',
+              },
+              
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
     },
 
-    plugins: [forms],
+    plugins: [forms, require('flowbite/plugin'), require("tw-elements/dist/plugin.cjs")],
 };
