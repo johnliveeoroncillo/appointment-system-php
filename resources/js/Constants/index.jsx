@@ -16,7 +16,7 @@ export const sidebarLinks = [
     {
         id: "appointments",
         title: "Appointemts",
-        href: "appointments.index",
+        href: "appointments.show",
         icon: ClipboardDocumentListIcon,
     },
     {
@@ -100,61 +100,39 @@ export const user = [
 //     }));
 
 //medical chart
-export const medicalchartData = [
-    {
-        id: "Name",
-        data: "name from database",
-    },
-    {
-        id: "gender",
-        data: "gender from database",
-    },
-    {
-        id: "age",
-        data: "age from database",
-    },
-    {
-        id: "Height",
-        data: "Height from database",
-    },
-    {
-        id: "Weight",
-        data: "Weight from database",
-    },
-    {
-        id: "Blood pressure",
-        data: "Blood pressure from database",
-    },
-    {
-        id: "illness",
-        data: "illness from database",
-    },
-    {
-        id: "Physical Exam",
-        data: "Physical Exam from database",
-    },
-    {
-        id: "Medical History",
-        data: "Medical History from database",
-    },
-    {
-        id: "Allergies",
-        data: "Allergies from database",
-    },
-    {
-        id: "Family History",
-        data: "Family History from database",
-    },
-    {
-        id: "Social History",
-        data: "Social History from database",
-    },
-    {
-        id: "Diagnosis",
-        data: "Diagnosis from database",
-    },
-    {
-        id: "Plan",
-        data: "Plan from database",
-    },
-];
+
+export const medicalchartData = (medicalChart) => {
+    Array.isArray(medicalChart) &&
+        medicalChart.map((medical) => [
+            { id: "Name", data: medical.name },
+            { id: "gender", data: medical.gender },
+            { id: "age", data: medical.age },
+            { id: "Height", data: medical.height },
+            { id: "Weight", data: medical.weight },
+            { id: "Blood pressure", data: medical.bp },
+            { id: "illness", data: medical.illness },
+            { id: "Physical Exam", data: medical.physical_exam },
+            { id: "Medical History", data: medical.medical_history },
+            { id: "Allergies", data: medical.allergies },
+            { id: "Family History", data: medical.family_history },
+            { id: "Social History", data: medical.social_history },
+            { id: "Diagnosis", data: medical.diagnosis },
+            { id: "Plan", data: medical.plan },
+        ]);
+};
+// medicalChart.map((medical) => [
+//     { id: "Name", data: medical.name },
+//     { id: "gender", data: medical.gender },
+//     { id: "age", data: medical.age },
+//     { id: "Height", data: medical.height },
+//     { id: "Weight", data: medical.weight },
+//     { id: "Blood pressure", data: medical.bp },
+//     { id: "illness", data: medical.illness },
+//     { id: "Physical Exam", data: medical.physical_exam },
+//     { id: "Medical History", data: medical.medical_history },
+//     { id: "Allergies", data: medical.allergies },
+//     { id: "Family History", data: medical.family_history },
+//     { id: "Social History", data: medical.social_history },
+//     { id: "Diagnosis", data: medical.diagnosis },
+//     { id: "Plan", data: medical.plan },
+// ]);

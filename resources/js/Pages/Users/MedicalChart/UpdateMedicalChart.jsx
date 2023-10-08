@@ -1,77 +1,75 @@
-import { Head, Link, useForm, usePage } from "@inertiajs/react";
-import React, { useEffect, useState } from "react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
-import Textarea from "@/Components/Textarea";
 import PrimaryButton from "@/Components/PrimaryButton";
-import BackButton from "@/Components/BackButton";
+import TextInput from "@/Components/TextInput";
+import Textarea from "@/Components/Textarea";
+import { Head, router, useForm } from "@inertiajs/react";
+import React from "react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import InputError from "@/Components/InputError";
 
-export default function MedicalChartForm({ auth, medicalChart }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        user_id: auth.user.id,
-        name: auth.user.name,
-        gender: "",
-        age: "",
-        height: "",
-        weight: "",
-        bp: "",
-        illness: "",
-        physical_exam: "",
-        medical_history: "",
-        allergies: "",
-        family_history: "",
-        social_history: "",
-        diagnosis: "",
-        plan: "",
+export default function UpdateMedicalChart({ auth, medicalChart }) {
+    const { data, setData, put, processing, errors, reset } = useForm({
+        id: medicalChart.id,
+        name: medicalChart.name,
+        gender: medicalChart.gender,
+        age: medicalChart.age,
+        height: medicalChart.height,
+        weight: medicalChart.weight,
+        bp: medicalChart.bp,
+        illness: medicalChart.illness,
+        physical_exam: medicalChart.physical_exam,
+        medical_history: medicalChart.medical_history,
+        allergies: medicalChart.allergies,
+        family_history: medicalChart.family_history,
+        social_history: medicalChart.social_history,
+        diagnosis: medicalChart.diagnosis,
+        plan: medicalChart.plan,
     });
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("medical-chart.store"));
+        router.put(
+            route("medical-chart.update", { id: medicalChart.id }),
+            data
+        );
     };
+
     const handleOnChange = (event) => {
         const { name, value } = event.target;
         setData({ ...data, [name]: value });
     };
 
-    const medicalForMedicalChart =
-        medicalChart && medicalChart.user_id === auth.user.id;
-
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={
-                <div className="flex justify-between w-full">
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                        Create Medical Chart
-                    </h2>
-                </div>
-            }
-        >
-            <Head title="Medical Chart" />
-
-            {medicalForMedicalChart ? (
-                <div className="w-full h-96 flex flex-col items-center justify-center">
-                    <h1 className="text-gray-500 font-semibold">
-                        You can Only Submit one Medical chart
-                    </h1>
-                    <BackButton href="/medical-chart">Back</BackButton>
-                </div>
-            ) : (
+        <>
+            <AuthenticatedLayout
+                user={auth.user}
+                header={
+                    <div className="flex justify-between w-full">
+                        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                            Update Medical Chart
+                        </h2>
+                    </div>
+                }
+            >
+                <Head title="Medical Chart" />
                 <div className=" mt-5 drop-shadow-lg rounded-md font-opensans text-gray-800">
                     <form onSubmit={handleSubmit}>
                         <div className="border-b md:px-20 px-5 py-3 md:flex ">
                             <div className="md:w-[55vw]">
                                 <div className="hidden">
-                                    <InputLabel htmlFor="user_id" value="" />
+                                    <InputLabel htmlFor="id" value="ID" />
                                     <TextInput
                                         type="text"
-                                        id="user_id"
-                                        name="user_id"
-                                        value={data.user_id}
+                                        id="id"
+                                        name="id"
+                                        value={data.id}
                                         className="w-full"
                                         placeholder="Name"
                                         onChange={handleOnChange}
+                                    />
+                                    <InputError
+                                        message={errors.id}
+                                        className="mt-2"
                                     />
                                 </div>
                                 <div className="">
@@ -84,6 +82,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         className="w-full"
                                         placeholder="Name"
                                         onChange={handleOnChange}
+                                    />
+                                    <InputError
+                                        message={errors.name}
+                                        className="mt-2"
                                     />
                                 </div>
                                 <div className="md:flex md:space-x-5 mt-5">
@@ -116,6 +118,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                     Female
                                                 </option>
                                             </select>
+                                            <InputError
+                                                message={errors.gender}
+                                                className="mt-2"
+                                            />
                                         </div>
                                     </div>
                                     {/* age */}
@@ -132,6 +138,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 value={data.age}
                                                 placeholder="Age"
                                                 onChange={handleOnChange}
+                                            />
+                                            <InputError
+                                                message={errors.age}
+                                                className="mt-2"
                                             />
                                         </div>
                                     </div>
@@ -152,6 +162,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 placeholder="Height"
                                                 onChange={handleOnChange}
                                             />
+                                            <InputError
+                                                message={errors.height}
+                                                className="mt-2"
+                                            />
                                         </div>
                                     </div>
                                     {/* weight */}
@@ -169,6 +183,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 placeholder="Weight"
                                                 onChange={handleOnChange}
                                             />
+                                            <InputError
+                                                message={errors.weight}
+                                                className="mt-2"
+                                            />
                                         </div>
                                     </div>
                                     <div className="">
@@ -184,6 +202,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 value={data.bp}
                                                 placeholder="Blood Pressure"
                                                 onChange={handleOnChange}
+                                            />
+                                            <InputError
+                                                message={errors.bp}
+                                                className="mt-2"
                                             />
                                         </div>
                                     </div>
@@ -202,6 +224,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         value={data.illness}
                                         onChange={handleOnChange}
                                     />
+                                    <InputError
+                                        message={errors.illness}
+                                        className="mt-2"
+                                    />
                                 </div>
                                 {/* physical exam */}
                                 <div className="mt-5">
@@ -216,6 +242,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         className="w-full"
                                         placeholder="Physical exam"
                                         onChange={handleOnChange}
+                                    />
+                                    <InputError
+                                        message={errors.physical_exam}
+                                        className="mt-2"
                                     />
                                 </div>
                             </div>
@@ -235,6 +265,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                             placeholder="Medical history"
                                             onChange={handleOnChange}
                                         />
+                                        <InputError
+                                            message={errors.medical_history}
+                                            className="mt-2"
+                                        />
                                     </div>
                                     {/* allergies */}
                                     <div className="w-full">
@@ -249,6 +283,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                             className="w-full"
                                             placeholder="Allergies"
                                             onChange={handleOnChange}
+                                        />
+                                        <InputError
+                                            message={errors.allergies}
+                                            className="mt-2"
                                         />
                                     </div>
                                 </div>
@@ -266,6 +304,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         placeholder="Family history"
                                         onChange={handleOnChange}
                                     />
+                                    <InputError
+                                        message={errors.family_history}
+                                        className="mt-2"
+                                    />
                                 </div>
                                 {/* socail_history */}
                                 <div className="md:mt-1">
@@ -280,6 +322,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         className="w-full"
                                         placeholder="Social history"
                                         onChange={handleOnChange}
+                                    />
+                                    <InputError
+                                        message={errors.social_history}
+                                        className="mt-2"
                                     />
                                 </div>
                                 {/* diagnosis */}
@@ -296,6 +342,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         placeholder="Diagnosis"
                                         onChange={handleOnChange}
                                     />
+                                    <InputError
+                                        message={errors.diagnosis}
+                                        className="mt-2"
+                                    />
                                 </div>
                                 {/* plan */}
                                 <div className="md:mt-1">
@@ -308,6 +358,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         placeholder="Plan"
                                         onChange={handleOnChange}
                                     />
+                                    <InputError
+                                        message={errors.plan}
+                                        className="mt-2"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -316,12 +370,12 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                 disabled={processing}
                                 className="w-28 flex justify-center"
                             >
-                                Submit
+                                Update
                             </PrimaryButton>
                         </div>
                     </form>
                 </div>
-            )}
-        </AuthenticatedLayout>
+            </AuthenticatedLayout>
+        </>
     );
 }

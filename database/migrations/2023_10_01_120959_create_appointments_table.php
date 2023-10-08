@@ -16,15 +16,8 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(
-                User::class
-            );
-            $table->foreignidFor(
-                Doctor::class
-            );
-            $table->foreignIdFor(
-                Service::class
-            );
+            $table->foreignId('patient_id')->references('id')->on('users');
+            $table->foreignId('doctor_id')->references('id')->on('users');
             $table->string('name');
             $table->string('email')->unique();
             $table->date('date');
@@ -32,6 +25,9 @@ return new class extends Migration
             $table->boolean('status')->default(false);
             $table->string('due_date');
             $table->timestamps();
+
+            // $table->foreign('patient_id')->references('id')->on('users');
+            // $table->foreign('doctor_id')->references('id')->on('users');
         });
     }
 

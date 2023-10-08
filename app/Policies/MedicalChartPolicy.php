@@ -4,63 +4,19 @@ namespace App\Policies;
 
 use App\Models\MedicalChart;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class MedicalChartPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Create a new policy instance.
      */
-    public function viewAny(User $user): bool
+    public function __construct()
     {
         //
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, MedicalChart $medicalChart): bool
+    public function update(User $user, MedicalChart $medicalChart)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, MedicalChart $medicalChart): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, MedicalChart $medicalChart): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, MedicalChart $medicalChart): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, MedicalChart $medicalChart): bool
-    {
-        //
+        return $user->id === $medicalChart->user_id;
     }
 }

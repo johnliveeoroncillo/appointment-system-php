@@ -50,15 +50,22 @@ Route::get('/verifyMessage', function () {
     return Inertia::render('VerifyMessage');
 })->name('verifymessage');
 
+Route::get('/notfound', function () {
+    return Inertia::render('notFound404');
+})->name('404');
+
 // route for patient
 Route::middleware(['auth', 'role:patient'])->group(function () {
-    Route::get('/appointment', [AppointmentsController::class, 'index'])->name('appointment.index');
+    Route::get('/appointment', [AppointmentsController::class, 'show'])->name('appointment.show');
+    Route::get('/appointment/create', [AppointmentsController::class, 'create'])->name('appointment.create');
     Route::patch('/appointment/{appointment}', [AppointmentsController::class, 'update'])->name('appointment.update');
     Route::delete('/appointment/{id}', [AppointmentsController::class, 'destroy'])->name('appointment.destroy');
 
-    Route::get('/medical-chart', [MedicalChartsController::class, 'index'])->name('medical-chart.index');
+    Route::get('/medical-chart', [MedicalChartsController::class, 'show'])->name('medical-chart.show');
     Route::get('/medical-chart/create-form', [MedicalChartsController::class, 'create'])->name('medical-chart/create-form.create');
     Route::post('/medical-chart', [MedicalChartsController::class, 'store'])->name('medical-chart.store');
+    Route::get('/medical-chart/{id}', [MedicalChartsController::class, 'edit'])->name('medical-chart.edit');
+    Route::put('/medical-chart/{id}', [MedicalChartsController::class, 'update'])->name('medical-chart.update');
 });
 
 // route for admin

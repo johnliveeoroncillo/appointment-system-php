@@ -7,6 +7,7 @@ use App\Http\Requests\StoreMedicalChartRequest;
 use App\Http\Requests\UpdateMedicalChartRequest;
 use App\Models\User;
 use Faker\Provider\Medical;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class MedicalChartsController extends Controller
@@ -49,19 +50,14 @@ class MedicalChartsController extends Controller
      */
     public function store(StoreMedicalChartRequest $request)
     {
-        // $medicalChartData = $request->validated();
 
-        // $medicalChart = MedicalChart::create($medicalChartData);
-
-        // $medicalChart->save();
-        // Validate the request data here if needed
         $request->validate([
             'name' => 'required|string|max:255',
             'gender' => 'required|string',
             'age' => 'required|integer',
-            'height' => 'required|string',
-            'weight' => 'required|string',
-            'bp' => 'nullable|string',
+            'height' => 'required|integer',
+            'weight' => 'required|integer',
+            'bp' => 'nullable|integer',
             'illness' => 'nullable|string',
             'physical_exam' => 'nullable|string',
             'medical_history' => 'nullable|string',
@@ -100,7 +96,7 @@ class MedicalChartsController extends Controller
 
             $medicalchart->save();
 
-            return to_route('medical-chart.index');
+            return to_route('medical-chart.show')->with('message', 'Medical Chart Submitted!');
         }
     }
 
@@ -109,7 +105,17 @@ class MedicalChartsController extends Controller
      */
     public function show(MedicalChart $medicalChart)
     {
-        //
+        $user = User::with('medicalChart')->find(auth()->id());
+        $medicalChart = $user->medicalChart;
+
+        if ($user->role === 'patient') {
+            return Inertia::render('Users/MedicalChart', [
+                'medicalChart' => $medicalChart,
+                // dd($user->toArray())
+            ]);
+        } elseif ($user->role === 'doctor') {
+            //
+        }
     }
 
     /**
@@ -117,19 +123,31 @@ class MedicalChartsController extends Controller
      */
     public function edit(MedicalChart $medicalChart)
     {
-        //
+        $user = User::with('medicalChart')->find(auth()->id());
+        $medicalChart = $user->medicalChart;
+
+        if (
+            is_null($medicalChart) || is_null($medicalChart->user_id)
+        ) {
+            return to_route('404');
+        }
+        return Inertia::render('Users/MedicalChart/UpdateMedicalChart', [
+            'medicalChart' => $medicalChart,
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateMedicalChartRequest $request, MedicalChart $medicalChart)
     {
+
         $medicalChartData = $request->validated();
 
-        $medicalChart->update($medicalChartData);
+        DB::table('medical_charts')->where('id', $medicalChartData['id'])->update($medicalChartData);
 
-        $medicalChart->save();
+        return to_route('medical-chart.show')->with('message', 'Medical chart has been updated!');
     }
 
     /**
@@ -137,7 +155,7 @@ class MedicalChartsController extends Controller
      */
     public function destroy(MedicalChart $medicalChart)
     {
-        $medicalChart->delete();
-        return response()->json(['message' => 'Medical chart added successfully'], 200);
+        // $medicalChart->delete();
+        // return response()->json(['message' => 'Medical chart added successfully'], 200);
     }
 }

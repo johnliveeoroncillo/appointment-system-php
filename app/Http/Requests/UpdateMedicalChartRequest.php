@@ -11,7 +11,7 @@ class UpdateMedicalChartRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,20 +22,23 @@ class UpdateMedicalChartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'gender' => 'required|string',
-            'age' => 'required|integer',
-            'height' => 'nullable|string',
-            'weight' => 'nullable|string',
-            'bp' => 'nullable|string',
-            'illness' => 'nullable|string',
-            'physical_exam' => 'nullable|string',
-            'medical_history' => 'nullable|string',
-            'allergies' => 'nullable|string',
-            'family_history' => 'nullable|string',
-            'social_history' => 'nullable|string',
-            'diagnosis' => 'nullable|string',
-            'plan' => 'nullable|string',
+            'id' => ['required', 'exists:medical_charts,id'],
+            'name' => ['string', 'max:255'],
+            'gender' => ['required', 'string', 'max:255'],
+            'age' => ['required', 'integer',],
+            'height' => ['required', 'integer',],
+            'weight' => ['required', 'integer',],
+            'bp' => ['integer',],
+            'illness' => ['string', 'nullable', 'max:255'],
+            'physical_exam' => ['string', 'nullable', 'max:255'],
+            'medical_history' => ['string', 'nullable', 'max:255'],
+            'allergies' => ['string', 'nullable', 'max:255'],
+            'family_history' => ['string', 'nullable', 'max:255'],
+            'social_history' => ['string', 'nullable', 'max:255'],
+            'diagnosis' => ['string', 'nullable', 'max:255'],
+            'plan' => ['string', 'nullable', 'max:255'],
+
+
         ];
     }
 }

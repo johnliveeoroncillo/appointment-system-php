@@ -5,6 +5,8 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import { BellAlertIcon } from "@heroicons/react/24/solid";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -12,6 +14,18 @@ export default function Authenticated({ user, header, children }) {
 
     return (
         <div className="min-h-screen bg-gray-100">
+            <ToastContainer
+                position="bottom-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <nav className="bg-gradient-to-r from-primaryColor to-secondaryColor border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between w-full h-12">
@@ -30,17 +44,15 @@ export default function Authenticated({ user, header, children }) {
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    href={route("appointment.index")}
-                                    active={route().current(
-                                        "appointment.index"
-                                    )}
+                                    href={route("appointment.show")}
+                                    active={route().current("appointment.show")}
                                 >
                                     Appointment
                                 </NavLink>
                                 <NavLink
-                                    href={route("medical-chart.index")}
+                                    href={route("medical-chart.show")}
                                     active={route().current(
-                                        "medical-chart.index"
+                                        "medical-chart.show"
                                     )}
                                 >
                                     Medical Chart
@@ -160,22 +172,22 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             className="text-white"
-                            href={route("appointment.index")}
-                            active={route().current("appointmemt.index")}
+                            href={route("appointment.show")}
+                            active={route().current("appointmemt.show")}
                         >
                             Appointment
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             className="text-white"
-                            href={route("medical-chart.index")}
-                            active={route().current("medical-chart")}
+                            href={route("medical-chart.show")}
+                            active={route().current("medical-chart.show")}
                         >
                             Medical Chart
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             className="text-white"
-                            href={route("medical-chart.index")}
-                            active={route().current("medical-chart")}
+                            href={route("medical-chart.show")}
+                            active={route().current("medical-chart.show")}
                         >
                             Notification
                         </ResponsiveNavLink>
