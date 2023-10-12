@@ -1,11 +1,18 @@
 <?php
 
 use App\Http\Controllers\AppointmentsController;
+use App\Http\Controllers\Auth\DoctorLoginController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicalChartsController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\UsersController;
+use App\Models\Appointment;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -30,58 +37,64 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $user = Auth::user();
+
+    $notifications = $user->unreadNotifications;
+
+    return Inertia::render('Dashboard', [
+        'notifications' => $notifications,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-//redirect the user base on role
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::middleware('auth:sanctum')->get(
-    '/home',
-    [HomeController::class, 'index']
-)->name('home');
-
-Route::get('/verifyMessage', function () {
-    return Inertia::render('VerifyMessage');
-})->name('verifymessage');
 
 Route::get('/notfound', function () {
     return Inertia::render('notFound404');
 })->name('404');
 
 // route for patient
-Route::middleware(['auth', 'role:patient'])->group(function () {
+Route::middleware('patient')->group(function () {
     Route::get('/appointment', [AppointmentsController::class, 'show'])->name('appointment.show');
-    Route::get('/appointment/create', [AppointmentsController::class, 'create'])->name('appointment.create');
-    Route::patch('/appointment/{appointment}', [AppointmentsController::class, 'update'])->name('appointment.update');
+    Route::get('/appointment/history', [AppointmentsController::class, 'index'])->name('appointment.history.index');
+    Route::get('/appointment/create-form', [AppointmentsController::class, 'create'])->name('appointment.create-form.create');
+    Route::post('/appointment/create', [AppointmentsController::class, 'store'])->name('appointment.create.store');
+    Route::patch('/appointment/status/{id}', [AppointmentsController::class, 'update'])->name('appointment.update');
+    Route::patch('/appointment/{id}', [AppointmentsController::class, 'updateStatus'])->name('appointment.updateStatus');
     Route::delete('/appointment/{id}', [AppointmentsController::class, 'destroy'])->name('appointment.destroy');
 
     Route::get('/medical-chart', [MedicalChartsController::class, 'show'])->name('medical-chart.show');
-    Route::get('/medical-chart/create-form', [MedicalChartsController::class, 'create'])->name('medical-chart/create-form.create');
+    Route::get('/medical-chart/create-form', [MedicalChartsController::class, 'create'])->name('<medical-chart>create-form.create');
     Route::post('/medical-chart', [MedicalChartsController::class, 'store'])->name('medical-chart.store');
     Route::get('/medical-chart/{id}', [MedicalChartsController::class, 'edit'])->name('medical-chart.edit');
     Route::put('/medical-chart/{id}', [MedicalChartsController::class, 'update'])->name('medical-chart.update');
+
+    Route::get('/patient/notifications', [NotificationController::class, 'showNotifications'])->name('patient.notifications');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 // route for admin
-Route::middleware(['auth', 'role:doctor'])->group(function () {
-    // dashboard routes
+Route::middleware(['middleware' => 'auth:doctor'])->group(function () {
+    Route::get('/doctor/dashboard', [DoctorController::class, 'index'])->name('doctor.dashboard');
 
-    //appointment routes
-    Route::get('/appointments', [AppointmentsController::class, 'index'])->name('appointments.index');
+    Route::get('/doctor/notifications', [NotificationController::class, 'showNotifications'])->name('doctor.notifications');
+
+    Route::get('/appointment-requests', [AppointmentsController::class, 'show'])->name('appointment-requests.show');
+    Route::get('/appointment/doctor/history', [AppointmentsController::class, 'show'])->name('appointment.admin.history.show');
     Route::get('/appointments/{id}', [AppointmentsController::class, 'show'])->name('appointments/{id}.show');
-    //doctors routes
-    //services routes
+    Route::patch('/appointments/{id}', [AppointmentsController::class, 'update'])->name('appointments.update');
+
+    Route::get('/myappointments', [AppointmentsController::class, 'index'])->name('myappointments.index');
+    Route::get('/appointments', [AppointmentsController::class, 'index'])->name('appointments.index');
+
+
     Route::get('/services', [ServicesController::class, 'index'])->name('services.index');
-    //users routes
-    Route::get('/users', function () {
-        return 'try';
-    })->name('users');
+
+    Route::get('/users', [UsersController::class, 'index'])->name('users');
 });
 
 require __DIR__ . '/auth.php';

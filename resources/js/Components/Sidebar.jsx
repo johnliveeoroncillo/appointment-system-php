@@ -10,7 +10,7 @@ export default function Sidebar() {
             <aside className="w-16 max-h-screen min-h-screen bg-teal-900 | md:w-24 ">
                 {/* application logo */}
                 <div className="w-full h-16 flex items-center justify-center ">
-                    <Link href="home">
+                    <Link href="/">
                         <ApplicationLogo />
                     </Link>
                 </div>

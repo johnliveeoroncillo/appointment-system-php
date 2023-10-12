@@ -9,10 +9,12 @@ import {
     UsersIcon,
     WrenchScrewdriverIcon,
 } from "@heroicons/react/24/solid";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import React from "react";
+import AdminAppointments from "./AdminAppointments";
 
-export default function AdminDashboard({ appointments, auth }) {
+export default function AdminDashboard({ appointments, services, auth }) {
+    const { doctors, users } = usePage().props;
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -24,66 +26,86 @@ export default function AdminDashboard({ appointments, auth }) {
                     <h1 className="text-sm md:text-lg text-gray-600">
                         Upcoming Appointments
                     </h1>
-                    {appointments.map(
-                        (appointment) =>
-                            appointment.status === 1 && (
-                                <AppointmentCard
-                                    key={appointment.id}
-                                    name={appointment.name}
-                                    service={appointment.service_name}
-                                    date={appointment.formatted_date}
-                                    time={appointment.formatted_time}
-                                />
-                            )
+                    {appointments.some(
+                        (appointment) => appointment.status === 1
+                    ) ? (
+                        appointments.map(
+                            (appointment) =>
+                                appointment.status === 1 && (
+                                    <AppointmentCard
+                                        key={appointment.id}
+                                        name={appointment.name}
+                                        service={appointment.service_name}
+                                        date={appointment.formatted_date}
+                                        time={appointment.formatted_time}
+                                    />
+                                )
+                        )
+                    ) : (
+                        <p className="text-gray-500 text-center py-52">
+                            No upcoming appointments.
+                        </p>
                     )}
                 </div>
                 <div className="w-full hidden md:block">
                     <div className="w-full px-5 py-5 h-auto border-b flex flex-wrap border-gray-300">
                         <DetailCard
                             title="Appointments"
-                            count="20+"
+                            count={
+                                appointments.filter(
+                                    (appointment) => appointment.status === 1
+                                ).length
+                            }
+                            icon={
+                                <ClipboardDocumentCheckIcon className="w-8 h-8 text-gray-700" />
+                            }
+                        />
+                        <DetailCard
+                            title="Appointment Requests"
+                            count={
+                                appointments.filter(
+                                    (appointment) => appointment.status === 0
+                                ).length
+                            }
                             icon={
                                 <ClipboardDocumentCheckIcon className="w-8 h-8 text-gray-700" />
                             }
                         />
                         <DetailCard
                             title="Doctors"
-                            count="20+"
+                            count={doctors.length}
                             icon={
                                 <UserGroupIcon className="w-8 h-8 text-gray-700" />
                             }
                         />
                         <DetailCard
                             title="Services"
-                            count="20+"
+                            count={services.length}
                             icon={
                                 <WrenchScrewdriverIcon className="w-8 h-8 text-gray-700" />
                             }
                         />
                         <DetailCard
                             title="Users"
-                            count="20+"
+                            count={users.length}
                             icon={
                                 <UsersIcon className="w-8 h-8 text-gray-700" />
                             }
                         />
                     </div>
-                    <div className="h-full w-full bg-white">
+                    {/* <div className="h-full w-full bg-white">
                         <div className="w-full h-10 flex items-center justify-between border-b border-gray-300 px-5">
                             <p className="text-sm">
                                 Recent Appointment Request
-                            </p>
-                            {/* <Link
+                            </p> */}
+                    {/* <Link
                                 href="/appointments/requests"
                                 className="bg-teal-900 px-5 rounded-md text-white text-sm py-1 hover:bg-green-500"
                             >
                                 View Details
                             </Link> TODO: if no purpose found delete */}
-                        </div>
-                        {/* <div className="px-5 h-96 overflow-y-scroll">
-                            <Table columns={columns} data={formattedData} />
-                        </div> */}
-                    </div>
+                    {/* </div>
+                    </div> */}
                 </div>
             </div>
         </AdminAuthenticatedLayout>

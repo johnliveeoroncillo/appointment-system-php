@@ -1,307 +1,204 @@
+import { Head, useForm } from "@inertiajs/react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import React from "react";
+import PrimaryButton from "@/Components/PrimaryButton";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import { router } from "@inertiajs/react";
-import { useEffect, useState } from "react";
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import "../../style/toastStyle.css";
-// import InputNumber from "@/Components/InputNumber";
 
-export default function AppointmentForm({ auth }) {
-    // const services = props.services;
-    // const doctors = props.doctors;
-
+export default function AppointmentForm({ auth, services, doctors }) {
     const { data, setData, post, processing, errors } = useForm({
         user_id: auth.user.id,
         name: auth.user.name,
-        email: auth.user.email,
         date: "",
         time: "",
-        doctors: "",
-        service: "",
+        doctor_id: "",
+        service_id: "",
+        due_date: "",
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
         post(
-            route("appointment/create.store", {
-                onSuccess: () => {
-                    // toast.success("Schedule has been created!", {
-                    //     position: toast.POSITION.BOTTOM_RIGHT,
-                    //     className: "toast-success",
-                    // });
-                },
+            route("appointment.create.store", {
+                // onSuccess: () => {
+                //     // toast.success('Reschedule has been created!',{
+                //     //     position: toast.POSITION.BOTTOM_RIGHT,
+                //     //     className: 'toast-success'
+                //     // })
+                // },
             })
         );
     };
-
-    const [minDate, setMinDate] = useState("");
-
-    useEffect(() => {
-        // Get the current date in ISO format (YYYY-MM-DD)
-        const currentDate = new Date().toISOString().split("T")[0];
-        setMinDate(currentDate);
-    }, []);
-
-    const [minTime, setMinTime] = useState("");
-
-    useEffect(() => {
-        // Get the current date in ISO format (YYYY-MM-DD)
-        const currentDate = new Date().toISOString().split("T")[0];
-        setMinDate(currentDate);
-
-        // Get the current time in HH:MM format
-        const now = new Date();
-        const currentHours = now.getHours().toString().padStart(2, "0");
-        const currentMinutes = now.getMinutes().toString().padStart(2, "0");
-        const currentTime = `${currentHours}:${currentMinutes}`;
-        setMinTime(currentTime);
-    }, []);
-
     return (
         <AuthenticatedLayout
-            auth={auth.user}
-            // errors={props.errors}
+            user={auth.user}
             header={
-                <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-semibold leading-tight text-gray-800">
-                        Create Appointment{" "}
-                    </h1>
-                </div>
+                <h2 className="font-semibold text-lg md:text-xl text-gray-800 leading-tight">
+                    Set Appointment
+                </h2>
             }
         >
-            <Head title="Set Appointment" />
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 md:flex md:justify-center">
-                    <div className="overflow-hidden bg-white md:w-[79vw] shadow-sm sm:rounded-lg">
-                        <div className="w-full p-6 text-gray-900">
-                            <form onSubmit={handleSubmit}>
-                                <div className="">
-                                    <div className=" p-5">
-                                        <h1 className="text-2xl font-semibold">
-                                            Contact Information
-                                        </h1>
-                                        <div className="space-y-3 pt-5">
-                                            <InputLabel
-                                                htmlFor="name"
-                                                value="Name"
-                                            />
-                                            <TextInput
-                                                id="name"
-                                                name="name"
-                                                value={data.name}
-                                                className="w-full"
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "name",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                placeholder="Enter your name"
-                                            />
-                                            <InputError
-                                                message={errors.name}
-                                                className="mt-2"
-                                            />
-                                        </div>
-                                        <div className="space-y-3 pt-5">
-                                            <InputLabel
-                                                htmlFor="email"
-                                                value="Email"
-                                            />
-                                            <TextInput
-                                                id="email"
-                                                type="email"
-                                                name="email"
-                                                value={data.email}
-                                                className="w-full"
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "email",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                placeholder="Enter your email"
-                                            />
-                                            <InputError
-                                                message={errors.email}
-                                                className="mt-2"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className=" p-5">
-                                        <h1 className="text-2xl font-semibold">
-                                            Date and Time
-                                        </h1>
-                                        <div className="space-y-3 pt-5">
-                                            <InputLabel
-                                                htmlFor="date"
-                                                value="Preferred Date"
-                                            />
-                                            <TextInput
-                                                type="date"
-                                                id="date"
-                                                name="date"
-                                                min={minDate}
-                                                value={data.date}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "date",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                className="w-full"
-                                            />
-                                            <InputError
-                                                message={errors.date}
-                                                className="mt-2"
-                                            />
-                                        </div>
-                                        <div className="space-y-3 pt-5">
-                                            <InputLabel
-                                                htmlFor="time"
-                                                value="Preferred Time"
-                                            />
-                                            <select
-                                                name="time"
-                                                id="time"
-                                                value={data.time}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "time",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                className="slide-up block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-secondaryColor placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondaryColor sm:text-sm sm:leading-6 "
-                                            >
-                                                <option
-                                                    value="default"
-                                                    selected
-                                                >
-                                                    --Select Time--
-                                                </option>
-                                                <option value="08:00">
-                                                    8:00 AM
-                                                </option>
-                                                <option value="09:00">
-                                                    9:00 AM{" "}
-                                                </option>
-                                                <option value="10:00">
-                                                    10:00 AM{" "}
-                                                </option>
-                                                <option value="11:00">
-                                                    11:00 AM{" "}
-                                                </option>
-                                                <option value="12:00">
-                                                    12:00 PM{" "}
-                                                </option>
-                                                <option value="13:00">
-                                                    1:00 PM{" "}
-                                                </option>
-                                                <option value="14:00">
-                                                    2:00 PM{" "}
-                                                </option>
-                                                <option value="15:00">
-                                                    3:00 PM{" "}
-                                                </option>
-                                                <option value="16:00">
-                                                    4:00 PM{" "}
-                                                </option>
-                                            </select>
-                                            <InputError
-                                                message={errors.time}
-                                                className="mt-2"
-                                            />
-                                        </div>
-                                        <div className="space-y-3 pt-5">
-                                            <InputLabel
-                                                htmlFor="doctor"
-                                                value="Select Doctor"
-                                            />
-                                            <select
-                                                name="doctors_id"
-                                                id="doctor"
-                                                value={data.doctors_id}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "doctors_id",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                className="slide-up block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-secondaryColor placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondaryColor sm:text-sm sm:leading-6 "
-                                            >
-                                                <option
-                                                    value="default"
-                                                    selected
-                                                >
-                                                    --Select Doctor--
-                                                </option>
-                                                <option value="1">
-                                                    Dr. Vicente Lao
-                                                </option>
-                                            </select>
-                                            <InputError
-                                                message={errors.doctors_id}
-                                                className="mt-2"
-                                            />
-                                        </div>
-                                        <div className="space-y-3 pt-5">
-                                            <InputLabel
-                                                htmlFor="service"
-                                                value="Select Service"
-                                            />
-                                            <select
-                                                name="service"
-                                                id="service"
-                                                value={data.service}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "service",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                className="slide-up block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-secondaryColor placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondaryColor sm:text-sm sm:leading-6 "
-                                            >
-                                                <option
-                                                    value="default"
-                                                    selected
-                                                >
-                                                    --Select Services--
-                                                </option>
-                                                {/* {services.map((service) => {
-                                                    return (
-                                                        <option
-                                                            key={service.id}
-                                                            value={service.id}
-                                                        >
-                                                            {
-                                                                service.service_name
-                                                            }
-                                                        </option>
-                                                    );
-                                                })} */}
-                                            </select>
-                                            <InputError
-                                                message={errors.service}
-                                                className="mt-2"
-                                            />
-                                        </div>
-                                        <div className="mt-5">
-                                            <PrimaryButton
-                                                disabled={processing}
-                                            >
-                                                Book
-                                            </PrimaryButton>
-                                        </div>
-                                    </div>
+            <Head title="Appointment" />
+
+            <div className=" my-5 drop-shadow-lg rounded-md font-opensans px-5 w-full h-auto flex justify-center text-gray-800 |">
+                <div className="w-full md:w-[40vw] md:px-20 px-5 py-5 mt-4 bg-white | z-10">
+                    <h1 className="text-xl md:text-2xl text-gray-800 md:py-5">
+                        Fill in this form
+                    </h1>
+                    <form onSubmit={handleSubmit}>
+                        <div className="space-y-3">
+                            {/* name */}
+                            <div className="text-sm">
+                                <InputLabel htmlFor="name" value="Name" />
+
+                                <input
+                                    className="slide-up hidden border-2 mt-1 text-sm rounded-sm border-gray-300 w-full"
+                                    type="text"
+                                    id="user_id"
+                                    name="user_id"
+                                    value={data.user_id}
+                                    placeholder="Enter your name"
+                                    onChange={(e) =>
+                                        setData("name", e.target.value)
+                                    }
+                                />
+                                <input
+                                    className="slide-up border-2 mt-1 text-sm rounded-sm border-gray-300 w-full"
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={data.name}
+                                    placeholder="Enter your name"
+                                    onChange={(e) =>
+                                        setData("name", e.target.value)
+                                    }
+                                />
+                                <InputError
+                                    message={errors.name}
+                                    className="mt-2"
+                                />
+                            </div>
+                            {/* datetime */}
+                            <div className="space-y-3">
+                                {/* date */}
+                                <div>
+                                    <InputLabel
+                                        htmlFor="date"
+                                        value="Preferred Date"
+                                    />
+                                    <input
+                                        type="date"
+                                        id="date"
+                                        name="date"
+                                        value={data.date}
+                                        className="slide-up border-2 mt-1 text-sm rounded-sm border-gray-300 w-full"
+                                        onChange={(e) =>
+                                            setData("date", e.target.value)
+                                        }
+                                        placeholder="select date"
+                                    />
+
+                                    <InputError
+                                        message={errors.date}
+                                        className="mt-2"
+                                    />
                                 </div>
-                            </form>
+                                {/* time */}
+                                <div>
+                                    <InputLabel
+                                        htmlFor="time"
+                                        value="Preferred Time"
+                                    />
+                                    <input
+                                        type="time"
+                                        id="time"
+                                        name="time"
+                                        value={data.time}
+                                        className="slide-up border-2 mt-1 text-sm rounded-sm border-gray-300 w-full"
+                                        onChange={(e) =>
+                                            setData("time", e.target.value)
+                                        }
+                                        placeholder="select time"
+                                    />
+                                    <InputError
+                                        message={errors.time}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            </div>
+                            {/* doctor */}
+                            <div>
+                                <InputLabel
+                                    htmlFor="doctor_id"
+                                    value="Select Doctor"
+                                />
+                                <select
+                                    name="doctor_id"
+                                    id="doctor_id"
+                                    value={data.doctor_id}
+                                    onChange={(e) =>
+                                        setData("doctor_id", e.target.value)
+                                    }
+                                    className="border-2 slide-up mt-1 text-sm rounded-sm border-gray-300 w-full"
+                                >
+                                    <option value="default" selected>
+                                        Select Doctor
+                                    </option>
+                                    {doctors.map((doctor) => (
+                                        <option
+                                            key={doctor.id}
+                                            value={doctor.id}
+                                        >
+                                            Dr. {doctor.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <InputError
+                                    message={errors.doctor_id}
+                                    className="mt-2"
+                                />
+                            </div>
+                            {/* service */}
+                            <div>
+                                <InputLabel
+                                    htmlFor="service_id"
+                                    value="Select Service"
+                                />
+                                <select
+                                    name="service_id"
+                                    id="service_id"
+                                    value={data.service_id}
+                                    onChange={(e) =>
+                                        setData("service_id", e.target.value)
+                                    }
+                                    className="slide-up border-2 mt-1 text-sm rounded-sm border-gray-300 w-full"
+                                >
+                                    <option value="default" selected>
+                                        Select Services
+                                    </option>
+                                    {services.map((service) => {
+                                        return (
+                                            <option
+                                                key={service.id}
+                                                value={service.id}
+                                            >
+                                                {service.name}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                                <InputError
+                                    message={errors.service_id}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div className="w-full flex justify-end">
+                                <PrimaryButton disabled={processing}>
+                                    Set Appointment
+                                </PrimaryButton>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </AuthenticatedLayout>

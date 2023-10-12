@@ -3,6 +3,7 @@ import {
     ClipboardDocumentListIcon,
     WrenchScrewdriverIcon,
     UsersIcon,
+    EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "@inertiajs/react";
 
@@ -10,13 +11,31 @@ export const sidebarLinks = [
     {
         id: "home",
         title: "Home",
-        href: "home",
+        href: "doctor.dashboard",
         icon: HomeIcon,
+    },
+    {
+        id: "myappointments",
+        title: "My Appointemts",
+        href: "myappointments.index",
+        icon: ClipboardDocumentListIcon,
     },
     {
         id: "appointments",
         title: "Appointemts",
-        href: "appointments.show",
+        href: "appointments.index",
+        icon: ClipboardDocumentListIcon,
+    },
+    {
+        id: "appointment-requests",
+        title: "Appointemts Request",
+        href: "appointment-requests.show",
+        icon: ClipboardDocumentListIcon,
+    },
+    {
+        id: "appointment-history",
+        title: "History",
+        href: "appointment.admin.history.show",
         icon: ClipboardDocumentListIcon,
     },
     {
@@ -37,8 +56,7 @@ export const columns = [
     { header: "Name", accessor: "column1" },
     { header: "Date", accessor: "column2" },
     { header: "Time", accessor: "column3" },
-    { header: "Doctor", accessor: "column4" },
-    { header: "Status", accessor: "column5" },
+    { header: "Action", accessor: "column5" },
 ];
 
 export const data = (appointments) =>
@@ -46,15 +64,11 @@ export const data = (appointments) =>
         column1: appointment.name,
         column2: appointment.formatted_date,
         column3: appointment.formatted_time,
-        column4: appointment.doctor_name,
-        column5: appointment.status ? (
-            <small className="bg-green-500 px-5 py-1 text-white uppercase rounded-md">
-                approved
-            </small>
-        ) : (
-            <small className="bg-gray-400 px-5 py-1 text-white uppercase rounded-md">
-                pending
-            </small>
+        column5: (
+            <Link>
+                {" "}
+                <EllipsisVerticalIcon className="w-5 h-5 text-gray-500" />{" "}
+            </Link>
         ),
     }));
 // appointment ends here

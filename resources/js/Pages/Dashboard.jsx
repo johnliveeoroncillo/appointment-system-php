@@ -1,4 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import { Head, Link } from "@inertiajs/react";
 
 export default function Dashboard({ auth }) {
@@ -28,7 +29,7 @@ export default function Dashboard({ auth }) {
                         medical journey.
                     </p>
                     <Link
-                        href="/appointment"
+                        href="/appointment/create-form"
                         className="hover:bg-secondaryColor text-white px-5 py-2 rounded-md bg-primaryColor"
                     >
                         Set Appointment

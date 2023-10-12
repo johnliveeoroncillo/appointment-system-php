@@ -16,18 +16,15 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->references('id')->on('users');
-            $table->foreignId('doctor_id')->references('id')->on('users');
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Doctor::class);
+            $table->foreignIdFor(Service::class);
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->date('date');
             $table->time('time');
-            $table->boolean('status')->default(false);
-            $table->string('due_date');
+            $table->unsignedBigInteger('status')->default(0);
             $table->timestamps();
-
-            // $table->foreign('patient_id')->references('id')->on('users');
-            // $table->foreign('doctor_id')->references('id')->on('users');
         });
     }
 

@@ -1,6 +1,7 @@
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { Link } from "@inertiajs/react";
 import "../../css/GuestLayout.css";
+import ApplicationLogo from "@/Components/ApplicationLogo";
 
 export default function Guest({ children }) {
     return (
@@ -10,15 +11,16 @@ export default function Guest({ children }) {
                     <div className="relative flex flex-col items-center justify-center w-full h-auto">
                         <button className="w-[50px] h-[50px] bg-white rounded-full absolute inset-0 flex items-center justify-center -left-5 | hover:text-white hover:bg-teal-900 md:-left-16">
                             <Link href="/">
-                                <ChevronLeftIcon className="w-[28px] h-[28px] text-primaryColor" />
+                                <ChevronLeftIcon className="w-[28px] h-[28px]" />
                             </Link>
                         </button>
                         <Link href="/">
-                            <img
+                            {/* <img
                                 src="images/logo-green.png"
                                 alt="Logo image"
                                 className="h-auto w-[150px] slide-up"
-                            />
+                            /> */}
+                            <ApplicationLogo></ApplicationLogo>
                         </Link>
                         <h2 className="text-2xl font-semibold text-center font-roboto slide-up">
                             Vicente Lao, MD Medical Clinic

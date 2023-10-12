@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ServicesController extends Controller
@@ -14,8 +15,15 @@ class ServicesController extends Controller
      */
     public function index()
     {
+
+        $doctor = Auth::user();
+
+        $notifications = $doctor->unreadNotifications;
+
         return Inertia::render('Admin/AdminServices', [
             'services' => Service::paginate(5),
+            'notifications' => $notifications,
+
         ]);
     }
 

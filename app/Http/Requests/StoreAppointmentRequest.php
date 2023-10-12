@@ -24,7 +24,7 @@ class StoreAppointmentRequest extends FormRequest
         return [
             'user_id' => 'required',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:appointments,email' . $this->route('appointment'),
+            // 'email' => 'required|string|email|max:255|unique:appointments,email' . $this->route('appointment'),
             'date' => 'required',
             'time' => 'required',
             'doctor_id' => 'required|integer',

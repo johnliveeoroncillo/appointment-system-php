@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import React from "react";
 
 export default function Cards({
@@ -29,12 +30,15 @@ export default function Cards({
                     <li key="5" className="font-bold mt-2">
                         Service: <span className="font-normal">{service}</span>
                     </li>
-                    <li key="6" className="font-bold mt-2">
-                        Status: <span className="font-normal">{status}</span>
-                    </li>
-                    <li key="6" className="font-bold mt-2">
-                        Description:{" "}
-                        <span className="font-normal">{description}</span>
+                    <li>
+                        <div className="space-x-5 mt-5">
+                            <Link className="font-bold text-gray-800 ">
+                                View user profile
+                            </Link>
+                            <button className="font-bold text-red-500 ">
+                                Delete user
+                            </button>
+                        </div>
                     </li>
                 </ul>
             </div>

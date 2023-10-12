@@ -83,7 +83,7 @@ const Navbar = (props) => {
                     {/* checking if auth is define and user exist */}
                     {props.user ? (
                         <Link
-                            href={route("home")}
+                            href={route("dashboard")}
                             className="slide-up px-4 py-2 border-[1px] border-transparent flex items-center justify-center uppercase | hover:bg-gray-200/20 hover:rounded-md hover:border-[1px] hover:border-white/20"
                         >
                             Dashboard
@@ -126,7 +126,7 @@ const Navbar = (props) => {
 
                     {props.user ? (
                         <Link
-                            href={route("home")}
+                            href={route("dashboard")}
                             className="slide-up px-4 py-2 border-[1px] border-transparent | hover:bg-gray-200/30 hover:rounded-md hover:border-[1px] hover:border-white/20"
                         >
                             Dashboard

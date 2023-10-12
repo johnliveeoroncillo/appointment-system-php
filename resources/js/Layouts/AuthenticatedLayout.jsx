@@ -2,13 +2,14 @@ import { useState } from "react";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import { BellAlertIcon } from "@heroicons/react/24/solid";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Authenticated({ user, header, children }) {
+    const { notifications } = usePage().props;
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -26,9 +27,9 @@ export default function Authenticated({ user, header, children }) {
                 pauseOnHover
                 theme="light"
             />
-            <nav className="bg-gradient-to-r from-primaryColor to-secondaryColor border-b border-gray-100">
+            <nav className="bg-gradient-to-r from-primaryColor to-secondaryColor border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between w-full h-12">
+                    <div className="flex justify-between w-full h-16">
                         <div className="flex items-center w-full">
                             <div className="shrink-0 flex items-center text-textColor ">
                                 <Link href="/">
@@ -36,10 +37,10 @@ export default function Authenticated({ user, header, children }) {
                                 </Link>
                             </div>
 
-                            <div className="hidden w-96 h-12 sm:-my-px sm:ml-10 sm:flex text-textColor">
+                            <div className="hidden w-96 h-16 sm:-my-px sm:ml-10 sm:flex text-textColor">
                                 <NavLink
-                                    href={route("home")}
-                                    active={route().current("home")}
+                                    href={route("dashboard")}
+                                    active={route().current("dashboard")}
                                 >
                                     Dashboard
                                 </NavLink>
@@ -57,17 +58,33 @@ export default function Authenticated({ user, header, children }) {
                                 >
                                     Medical Chart
                                 </NavLink>
+                                <NavLink
+                                    href={route("appointment.history.index")}
+                                    active={route().current(
+                                        "appointment.history.index"
+                                    )}
+                                >
+                                    History
+                                </NavLink>
                             </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ml-6 w-72">
                             <Link
+                                href="/patient/notifications"
                                 className="h-10 rounded-full w-10 flex items-center
                             justify-center hover:bg-green-500 focus:outline-none
                             focus:bg-green-600 focus:text-gren-600 transition
-                            duration-150 ease-in-out"
+                            duration-150 ease-in-out relative"
                             >
                                 <BellAlertIcon className="w-5 h-5 text-white" />
+                                {notifications.length > 0 && (
+                                    <span className="absolute top-1 right-1 w-4 h-4 text-center text-white text-[10px] start-100 border border-white translate-middle badge rounded-full bg-danger">
+                                        {notifications.length > 9
+                                            ? "9+"
+                                            : notifications.length}
+                                    </span>
+                                )}
                             </Link>
                             <div className="ml-3 relative">
                                 <Dropdown>
@@ -165,8 +182,8 @@ export default function Authenticated({ user, header, children }) {
                     <div className="pt-2 pb-3 space-y-1 text-textColor">
                         <ResponsiveNavLink
                             className="text-white"
-                            href={route("home")}
-                            active={route().current("home")}
+                            href={route("dashboard")}
+                            active={route().current("dashboard")}
                         >
                             Dashboard
                         </ResponsiveNavLink>
@@ -186,8 +203,17 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             className="text-white"
-                            href={route("medical-chart.show")}
-                            active={route().current("medical-chart.show")}
+                            href={route("appointment.history.index")}
+                            active={route().current(
+                                "appointment.history.index"
+                            )}
+                        >
+                            History
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            className="text-white"
+                            href={route("patient.notifications")}
+                            active={route().current("patient.notifications")}
                         >
                             Notification
                         </ResponsiveNavLink>

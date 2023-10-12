@@ -2,6 +2,7 @@ import { Head, Link, router, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { ArrowPathIcon, PlusIcon } from "@heroicons/react/24/solid";
 
 export default function MedicalChart({ auth, medicalChart }) {
     const { flash } = usePage().props;
@@ -24,16 +25,23 @@ export default function MedicalChart({ auth, medicalChart }) {
             user={auth.user}
             header={
                 <div className="flex justify-between w-full">
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                    <h2 className="font-semibold text-lg md:text-xl text-gray-800 leading-tight">
                         Medical Chart
                     </h2>
                     {checkForMedicalChart ? (
-                        <Link
-                            href="/medical-chart/{id}"
-                            className="transition duration-150 ease-in-out hover:bg-green-500 px-5 py-1 rounded-md hover:text-white focus:text-white-700 focus:bg-green-700 focus:border-gray-300 "
-                        >
-                            Update Medical Chart
-                        </Link>
+                        <div>
+                            <Link
+                                href="/medical-chart/{id}"
+                                className="transition duration-150 hidden md:block ease-in-out hover:bg-green-500 px-5 py-1 rounded-md hover:text-white focus:text-white-700 focus:bg-green-700 focus:border-gray-300 "
+                            >
+                                Update Medical Chart
+                            </Link>
+                            <div className="bg-primaryColor py-1 px-1 md:hidden rounded-md">
+                                <Link href="/medical-chart/{id}">
+                                    <ArrowPathIcon className="w-6 h-6 text-white" />
+                                </Link>
+                            </div>
+                        </div>
                     ) : (
                         ""
                     )}
@@ -46,7 +54,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                 {checkForMedicalChart ? (
                     <div className="w-full md:px-20 px-5 mt-4 md:flex block | z-10">
                         <div className="w-full">
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Name
                                 </h1>
@@ -54,7 +62,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.name}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Gender
                                 </h1>
@@ -62,7 +70,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.gender}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Age
                                 </h1>
@@ -70,7 +78,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.age}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Height
                                 </h1>
@@ -78,7 +86,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.height}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Weight
                                 </h1>
@@ -86,7 +94,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.weight}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Blood Pressure
                                 </h1>
@@ -94,7 +102,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.bp}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Illness
                                 </h1>
@@ -104,7 +112,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                             </div>
                         </div>
                         <div className=" w-full mb-20 ml-1">
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Physical Exam
                                 </h1>
@@ -112,7 +120,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.physical_exam}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Medical History
                                 </h1>
@@ -120,7 +128,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.medical_history}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Allergies
                                 </h1>
@@ -128,7 +136,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.allergies}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Family History
                                 </h1>
@@ -136,7 +144,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.family_history}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Social History
                                 </h1>
@@ -144,7 +152,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.social_history}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Diagnosis
                                 </h1>
@@ -152,7 +160,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     {medicalChart.diagnosis}
                                 </p>
                             </div>
-                            <div className="w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
+                            <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
                                 <h1 className="text-sm uppercase font-semibold text-gray-900">
                                     Plan
                                 </h1>

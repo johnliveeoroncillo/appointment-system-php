@@ -120,6 +120,11 @@ export default function Login({ status, canResetPassword }) {
                             Log in
                         </PrimaryButton>
                     </div>
+                    <div className="slide-up w-full mt-10 underline text-gray-500 hover:text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <Link href={route("doctor.login")}>
+                            Login as doctor
+                        </Link>
+                    </div>
                 </form>
             </div>
         </GuestLayout>

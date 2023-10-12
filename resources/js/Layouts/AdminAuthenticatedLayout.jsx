@@ -7,6 +7,7 @@ import { Link, usePage } from "@inertiajs/react";
 import React, { useState } from "react";
 
 export default function AdminAuthenticatedLayout({ user, header, children }) {
+    const { notifications } = usePage().props;
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     return (
@@ -22,8 +23,18 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                 <div className="ml-3 relative flex h-14 items-center  justify-between">
                                     {/* notification link */}
                                     <div className="h-10 rounded-full w-10 flex items-center justify-center hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                                        <Link>
+                                        <Link
+                                            href="/doctor/notifications"
+                                            className="relative"
+                                        >
                                             <BellAlertIcon className="w-6 h-6 text-gray-400" />
+                                            {notifications.length > 0 && (
+                                                <span className="absolute -top-1 -right-1 w-4 h-4 text-center text-white text-[10px] start-100 border border-white translate-middle badge rounded-full bg-danger">
+                                                    {notifications.length > 9
+                                                        ? "9+"
+                                                        : notifications.length}
+                                                </span>
+                                            )}
                                         </Link>
                                     </div>
                                     {/* profile dropdown */}
@@ -58,7 +69,7 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                                 Profile
                                             </Dropdown.Link>
                                             <Dropdown.Link
-                                                href={route("logout")}
+                                                href={route("doctor.logout")}
                                                 method="post"
                                                 as="button"
                                             >
@@ -72,8 +83,18 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                             <div className="-mr-2 flex items-center sm:hidden  justify-between hover:text-gray-500 ">
                                 {/* notification link */}
                                 <div className="h-10 rounded-md w-10 flex items-center justify-center hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                                    <Link>
-                                        <BellAlertIcon className="w-5 h-5 text-gray-400" />
+                                    <Link
+                                        href="/notifications"
+                                        className="relative"
+                                    >
+                                        <BellAlertIcon className="w-6 h-6 text-gray-400" />
+                                        {/* {notifications.length > 0 && (
+                                            <span className="absolute -top-1 -right-1 w-4 h-4 text-center text-white text-[10px] start-100 border border-white translate-middle badge rounded-full bg-danger">
+                                                {notifications.length > 9
+                                                    ? "9+"
+                                                    : notifications.length}
+                                            </span>
+                                        )} */}
                                     </Link>
                                 </div>
                                 <button
@@ -140,7 +161,7 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                 </ResponsiveNavLink>
                                 <ResponsiveNavLink
                                     method="post"
-                                    href={route("logout")}
+                                    href={route("doctor.logout")}
                                     as="button"
                                 >
                                     Log Out

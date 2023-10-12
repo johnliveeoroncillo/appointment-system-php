@@ -7,6 +7,7 @@ use App\Http\Requests\StoreMedicalChartRequest;
 use App\Http\Requests\UpdateMedicalChartRequest;
 use App\Models\User;
 use Faker\Provider\Medical;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -20,7 +21,10 @@ class MedicalChartsController extends Controller
         $user = auth()->user();
 
         if ($user->role === 'patient') {
-            return Inertia::render('Users/MedicalChart');
+
+
+
+            return Inertia::render('Users/MedicalChart', []);
         } elseif ($user->role === 'doctor') {
             //
         }
@@ -39,9 +43,13 @@ class MedicalChartsController extends Controller
         $user = User::with('medicalChart')->find(auth()->id());
         $medicalChart = $user->medicalChart;
 
+        $user = Auth::user();
+
+        $notifications = $user->unreadNotifications;
+
         return Inertia::render('Users/MedicalChart/MedicalChartForm', [
-            'medicalChart' => $medicalChart
-            // dd($user->toArray())
+            'medicalChart' => $medicalChart,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -109,9 +117,12 @@ class MedicalChartsController extends Controller
         $medicalChart = $user->medicalChart;
 
         if ($user->role === 'patient') {
+            $user = Auth::user();
+
+            $notifications = $user->unreadNotifications;
             return Inertia::render('Users/MedicalChart', [
                 'medicalChart' => $medicalChart,
-                // dd($user->toArray())
+                'notifications' => $notifications,
             ]);
         } elseif ($user->role === 'doctor') {
             //
@@ -131,8 +142,14 @@ class MedicalChartsController extends Controller
         ) {
             return to_route('404');
         }
+
+        $user = Auth::user();
+
+        $notifications = $user->unreadNotifications;
+
         return Inertia::render('Users/MedicalChart/UpdateMedicalChart', [
             'medicalChart' => $medicalChart,
+            'notifications' => $notifications,
         ]);
     }
 

@@ -42,7 +42,7 @@ export default function MedicalChartForm({ auth, medicalChart }) {
             user={auth.user}
             header={
                 <div className="flex justify-between w-full">
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                    <h2 className="font-semibold text-lg md:text-xl text-gray-800 leading-tight">
                         Create Medical Chart
                     </h2>
                 </div>
@@ -58,9 +58,9 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                     <BackButton href="/medical-chart">Back</BackButton>
                 </div>
             ) : (
-                <div className=" mt-5 drop-shadow-lg rounded-md font-opensans text-gray-800">
+                <div className=" mt-5 mx-5 md:mx-20 md:py-5  border border-red-100 drop-shadow-lg rounded-md font-opensans bg-white text-gray-800">
                     <form onSubmit={handleSubmit}>
-                        <div className="border-b md:px-20 px-5 py-3 md:flex ">
+                        <div className="md:pl-20 px-5 py-3 md:flex ">
                             <div className="md:w-[55vw]">
                                 <div className="hidden">
                                     <InputLabel htmlFor="user_id" value="" />
@@ -311,7 +311,7 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full flex justify-end md:px-40 px-5">
+                        <div className="w-full flex justify-end md:px-24 px-5">
                             <PrimaryButton
                                 disabled={processing}
                                 className="w-28 flex justify-center"
