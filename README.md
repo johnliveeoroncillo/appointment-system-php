@@ -13,7 +13,7 @@ download the file and open in vs code
 ```
     php artisan migrate
     php artisan db:seed --class=DoctorController
-    php artisan db:seed --class=SeederController
+    php artisan db:seed --class=ServiceController
 
 ```
 
