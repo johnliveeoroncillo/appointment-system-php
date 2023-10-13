@@ -12,8 +12,8 @@ download the file and open in vs code
 ### For database
 ```
     php artisan migrate
-    php artisan db:seed --class=DoctorController
-    php artisan db:seed --class=ServiceController
+    php artisan db:seed --class=DoctorSeeder
+    php artisan db:seed --class=ServiceSeeder
 
 ```
 
