@@ -17,7 +17,7 @@ export default function UpdateProfileInformation({
             name: user.name,
             email: user.email,
             mobile_number: user.mobile_number,
-            email: user.email,
+            address: user.address,
         });
 
     const submit = (e) => {

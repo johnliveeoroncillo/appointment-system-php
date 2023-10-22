@@ -24,16 +24,16 @@ class UpdateDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['string', 'max:255'],
             'email' => ['email', 'max:255', Rule::unique(Doctor::class)->ignore($this->user()->id)],
             'mobile_number' =>
-            ['required', 'string', 'max:255'],
+            ['string', 'max:255'],
             'specialization' =>
-            ['required', 'string', 'max:255'],
+            ['string', 'max:255'],
             'license_address' =>
-            ['required', 'string', 'max:255'],
+            ['string', 'max:255'],
             'clinic_address' =>
-            ['required', 'string', 'max:255'],
+            ['string', 'max:255'],
         ];
     }
 }
