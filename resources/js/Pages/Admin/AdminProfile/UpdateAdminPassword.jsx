@@ -29,7 +29,7 @@ export default function UpdateAdminPassword({ className = "" }) {
     const updatePassword = (e) => {
         e.preventDefault();
 
-        put(route("password.update"), {
+        put(route("password.updateAdmin"), {
             preserveScroll: true,
             onSuccess: () => {
                 toast.success("Password has been updated!");

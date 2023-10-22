@@ -4,6 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
+import { toast } from "react-toastify";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -23,7 +24,11 @@ export default function UpdateProfileInformation({
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route("profile.update"));
+        patch(route("profile.update"), {
+            onSuccess: () => {
+                toast.success("Profile has been updated!");
+            },
+        });
     };
 
     return (

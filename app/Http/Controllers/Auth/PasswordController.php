@@ -26,4 +26,17 @@ class PasswordController extends Controller
 
         return back();
     }
+    public function updateAdmin(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back();
+    }
 }
