@@ -1,54 +1,31 @@
-import AdminDeleteModal from "@/Components/AdminDeleteModal";
+import ApproveModal from "@/Components/ApproveModal";
 import Cards from "@/Components/Cards";
+import DeclineModal from "@/Components/DeclineModal";
+import Dropdown from "@/Components/Dropdown";
 import Pagination from "@/Components/PaginationButton";
 import ViewDetails from "@/Components/ViewDetails";
+import { columns, data } from "@/Constants";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
-import React, { useState } from "react";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
+import { Head, router, usePage } from "@inertiajs/react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export default function AdminHistory({ auth, appointments }) {
+export default function AdminAppointmentRequests({ appointments, auth }) {
+    const { flash } = usePage().props;
     const appointmentList = appointments.data || "";
-    const goToCanceled = () => {
-        router.visit("/appointment/doctor/canceled");
-    };
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
-
-    const openModal = (appointmentId) => {
-        setSelectedAppointmentId(appointmentId);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setSelectedAppointmentId(null);
-        setIsModalOpen(false);
-    };
-    //display toast
-    const showToastNotification = (message) => {
-        toast.error(message, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-        });
-    };
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
             header={
                 <div className="flex justify-between w-full">
-                    <h1 className="">History</h1>
-                    <span>
-                        <button
-                            onClick={goToCanceled}
-                            className="text-sm text-gray-400 hover:text-gray-700"
-                        >
-                            Canceled Appointments
-                        </button>
-                    </span>
+                    <div>
+                        <h1 className="">Appointments Requests</h1>
+                    </div>
                 </div>
             }
         >
-            <Head title="History" />
+            <Head title="Appointment Requests" />
             <div className="h-[81.3vh] w-full flex">
                 <div className="w-full md:px-10">
                     {appointmentList.length > 0 ? (
@@ -85,21 +62,29 @@ export default function AdminHistory({ auth, appointments }) {
                                                 {item.formatted_created_at}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className="badge bg-success px-3 rounded-md text-white">
-                                                    {item.status === 2
-                                                        ? "Done"
-                                                        : ""}
+                                                <span className="badge bg-secondary px-3 rounded-md text-white">
+                                                    {item.status === 0
+                                                        ? "Pending"
+                                                        : "Approve"}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <button
-                                                    onClick={() =>
-                                                        openModal(item.id)
-                                                    }
-                                                    className="text-red-400 hover:text-red-600"
-                                                >
-                                                    Delete
-                                                </button>
+                                                <div className="space-x-5">
+                                                    <button className="text-green-400 hover:text-green-600">
+                                                        <ApproveModal
+                                                            AppointmentSelectdId={
+                                                                item.id
+                                                            }
+                                                        />
+                                                    </button>
+                                                    <button className="text-red-400 hover:text-red-600">
+                                                        <DeclineModal
+                                                            AppointmentSelectdId={
+                                                                item.id
+                                                            }
+                                                        />
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -109,7 +94,7 @@ export default function AdminHistory({ auth, appointments }) {
                     ) : (
                         <div className="hidden md:flex h-[70vh] items-center">
                             <h1 className="text-center w-full text-xl text-gray-400">
-                                You have no finished appointment yet!
+                                You have no appointment request yet!
                             </h1>
                         </div>
                     )}
@@ -128,7 +113,7 @@ export default function AdminHistory({ auth, appointments }) {
                     ) : (
                         <div className="md:hidden h-[70vh] flex items-center">
                             <h1 className="text-center w-full text-xl text-gray-400">
-                                You have no finished appointment yet!
+                                You have no appointment request yet!
                             </h1>
                         </div>
                     )}
@@ -136,12 +121,6 @@ export default function AdminHistory({ auth, appointments }) {
                     {appointmentList.length > 0 && (
                         <Pagination db={appointments} />
                     )}
-                    <AdminDeleteModal
-                        isOpen={isModalOpen}
-                        selectedAppointmentId={selectedAppointmentId}
-                        onClose={closeModal}
-                        toast={showToastNotification}
-                    />
                 </div>
             </div>
         </AdminAuthenticatedLayout>

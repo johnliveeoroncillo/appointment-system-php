@@ -8,14 +8,14 @@ const DoctorCard = ({ name, title, quote }) => {
     return (
         <>
             <div className="flex w-full flex-col overflow-hidden h-auto | md:flex-row md:h-96">
-                <div className="relative w-full h-96 px-5 py-5 bg-primaryColor | md:w-[50%]">
+                <div className="relative w-full h-96 px-9 py-9  bg-primaryColor | md:w-[50%]">
                     <img
-                        src="images/doctor-image.jpg"
+                        src="images/doctor.jpg"
                         alt="image of a doctor"
-                        className="h-[300px] w-[450px] rounded-md  | md:absolute md:inset-0 md:left-28 md:top-16"
+                        className="h-[300px] w-[300px] rounded-md  | md:absolute md:inset-0 md:left-40 md:top-12"
                         data-aos="fade-right"
                     />
-                    <div className="absolute inset-0 bg-secondaryColor/20 min-h-auto"></div>
+                    <div className="absolute inset-0 bg-black/30 min-h-auto"></div>
                 </div>
                 <div className="w-full h-auto flex flex-col justify-center pt-4 px-16 text-center | md:w-[50%] md:text-left">
                     <h1

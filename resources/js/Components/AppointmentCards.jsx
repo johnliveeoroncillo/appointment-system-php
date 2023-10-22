@@ -1,6 +1,8 @@
 import { TrashIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import RescheduleModal from "./RescheduleModal";
+import CancelModal from "./CancelModal";
+import MarkDone from "./MarkDone";
 
 export default function AppointmentCards({
     doctor,
@@ -10,7 +12,10 @@ export default function AppointmentCards({
     time,
     status,
     onClick,
+    onClickCancel,
     data,
+    selectedId,
+    toasts,
 }) {
     const getBackgroundColor = () => {
         if (status === "Pending") {
@@ -50,11 +55,11 @@ export default function AppointmentCards({
                             <div className="flex gap-4">
                                 <button
                                     className="text-green-400 hover:text-green-500 hover:font-bold"
-                                    onClick={() =>
-                                        console.log("Mark as Done clicked")
-                                    }
+                                    onClick={onClick}
                                 >
-                                    Mark as Done
+                                    <MarkDone
+                                        AppointmentSelectdId={selectedId}
+                                    />
                                 </button>
                                 <RescheduleModal appointmentList={data} />
                             </div>
@@ -63,20 +68,19 @@ export default function AppointmentCards({
                             <button
                                 onClick={onClick}
                                 className="text-red-400 hover:text-red-500 hover:font-bold"
-                                // className=" text-white text-sm h-8 shadow-sm rounded-md flex px-5 py-1 items-center justify-center hover:bg-red-500 bg-red-300 hover:text-white"
                             >
-                                {/* <TrashIcon className="w-4 h-4" /> */}
                                 Delete
                             </button>
                         )}
                         {(status === "Pending" || status === "Approved") && (
                             <button
-                                onClick={onClick}
+                                onClick={onClickCancel}
                                 className="text-red-300 hover:text-red-500 hover:font-bold"
-                                // className=" text-white text-sm h-8 shadow-sm rounded-md flex px-5 py-1 items-center justify-center hover:bg-red-500 bg-red-300 hover:text-white"
                             >
-                                {/* <TrashIcon className="w-4 h-4" /> */}
-                                Cancel
+                                <CancelModal
+                                    toast={toasts}
+                                    AppointmentSelectdId={selectedId}
+                                />
                             </button>
                         )}
                     </div>

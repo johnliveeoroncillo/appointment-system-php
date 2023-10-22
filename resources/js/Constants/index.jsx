@@ -4,6 +4,8 @@ import {
     WrenchScrewdriverIcon,
     UsersIcon,
     EllipsisVerticalIcon,
+    ClipboardDocumentCheckIcon,
+    ClipboardDocumentIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "@inertiajs/react";
 
@@ -14,29 +16,29 @@ export const sidebarLinks = [
         href: "doctor.dashboard",
         icon: HomeIcon,
     },
-    {
-        id: "myappointments",
-        title: "My Appointemts",
-        href: "myappointments.index",
-        icon: ClipboardDocumentListIcon,
-    },
+    // {
+    //     id: "myappointments",
+    //     title: "My Appointemts",
+    //     href: "appointment.myappointments.showMyAppointments",
+    //     icon: ClipboardDocumentListIcon,
+    // },
     {
         id: "appointments",
         title: "Appointemts",
-        href: "appointments.index",
+        href: "appointment.showAppointments",
         icon: ClipboardDocumentListIcon,
     },
     {
         id: "appointment-requests",
         title: "Appointemts Request",
         href: "appointment-requests.show",
-        icon: ClipboardDocumentListIcon,
+        icon: ClipboardDocumentIcon,
     },
     {
         id: "appointment-history",
         title: "History",
-        href: "appointment.admin.history.show",
-        icon: ClipboardDocumentListIcon,
+        href: "appointment.admin.history.showHistory",
+        icon: ClipboardDocumentCheckIcon,
     },
     {
         id: "services",
@@ -47,7 +49,7 @@ export const sidebarLinks = [
     {
         id: "users",
         title: "Users",
-        href: "users",
+        href: "users.index",
         icon: UsersIcon,
     },
 ];
@@ -97,23 +99,6 @@ export const servicesData = (services) =>
 // service end here
 
 //users
-export const user = [
-    // { header: "Name", accessor: "column1" },
-    // { header: "description", accessor: "column2" },
-    // { header: "description", accessor: "column2" },
-    // { header: "description", accessor: "column2" },
-    // { header: "description", accessor: "column2" },
-    // { header: "description", accessor: "column2" },
-    // { header: "description", accessor: "column2" },
-];
-
-// export const usersData = (users) =>
-//     users.map((user) => ({
-//         column1: user.name,
-//         column2: user.description,
-//     }));
-
-//medical chart
 
 export const medicalchartData = (medicalChart) => {
     Array.isArray(medicalChart) &&

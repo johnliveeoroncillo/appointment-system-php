@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Modal from "./Modal";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { router, useForm } from "@inertiajs/react";
 import "react-toastify/dist/ReactToastify.css";
-import TextInput from "./TextInput";
 import { toast } from "react-toastify";
+import Modal from "@/Components/Modal";
+import TextInput from "@/Components/TextInput";
 
-function CancelModal({ AppointmentSelectdId }) {
+function AdminMarkDone({ AppointmentSelectdId }) {
     const [isOpen, setIsOpen] = useState(false);
     const { data, setData, patch, processing, errors, reset } = useForm({
         id: "",
@@ -22,9 +22,9 @@ function CancelModal({ AppointmentSelectdId }) {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        patch(`/appointment/cancel/${AppointmentSelectdId.id}`, {
+        patch(`/appointment/doctor/done/${AppointmentSelectdId.id}`, {
             onSuccess: () => {
-                toast.info("Appointment has been canceled!", {
+                toast.info("Marked done", {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     className: "toast-success",
                 });
@@ -34,7 +34,7 @@ function CancelModal({ AppointmentSelectdId }) {
 
     return (
         <>
-            <div onClick={openModal}>Cancel</div>
+            <div onClick={openModal}>Mark as done</div>
             <Modal show={isOpen} onClose={closeModal} maxWidth="md">
                 <form onSubmit={handleUpdate}>
                     <div className="hidden">
@@ -48,18 +48,19 @@ function CancelModal({ AppointmentSelectdId }) {
                     </div>
                     <div className="p-4 flex items-center justify-center flex-col">
                         <div className="w-16 h-16 bg-red-100/50 flex items-center justify-center rounded-full">
-                            <ExclamationTriangleIcon className="w-10 h-10 text-red-500" />
+                            <ExclamationTriangleIcon className="w-10 h-10 text-yellow-300" />
                         </div>
                         <h1 className="text-3xl text-gray-600 font-semibold">
                             Warning
                         </h1>
                         <p className="text-sm text-gray-500 text-center ">
-                            Cancelling this appointment is irreversible. Are you
-                            sure you want to proceed?
+                            Ready to mark this appointment as done? Once
+                            confirmed, the status will be updated, and further
+                            changes may be limited.
                         </p>
                     </div>
                     <div className="p-4 flex w-full justify-center space-x-5 font-semibold">
-                        <button className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 w-36">
+                        <button className="px-3 py-2 bg-yellow-400 text-white rounded-md hover:bg-yellow-300 w-36">
                             Confirm
                         </button>
                         <button
@@ -76,4 +77,4 @@ function CancelModal({ AppointmentSelectdId }) {
     );
 }
 
-export default CancelModal;
+export default AdminMarkDone;

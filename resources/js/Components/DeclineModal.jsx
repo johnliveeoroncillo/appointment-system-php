@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useForm } from "@inertiajs/react";
+import React, { useState } from "react";
 import Modal from "./Modal";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
-import { router, useForm } from "@inertiajs/react";
-import "react-toastify/dist/ReactToastify.css";
-import TextInput from "./TextInput";
 import { toast } from "react-toastify";
+import TextInput from "./TextInput";
 
-function CancelModal({ AppointmentSelectdId }) {
+export default function DeclineModal({ AppointmentSelectdId }) {
     const [isOpen, setIsOpen] = useState(false);
     const { data, setData, patch, processing, errors, reset } = useForm({
-        id: "",
+        id: AppointmentSelectdId,
     });
 
     const openModal = () => {
@@ -22,9 +21,9 @@ function CancelModal({ AppointmentSelectdId }) {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        patch(`/appointment/cancel/${AppointmentSelectdId.id}`, {
+        patch(`/appointment/decline/${AppointmentSelectdId}`, {
             onSuccess: () => {
-                toast.info("Appointment has been canceled!", {
+                toast.info("Appointment canceled", {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     className: "toast-success",
                 });
@@ -59,7 +58,10 @@ function CancelModal({ AppointmentSelectdId }) {
                         </p>
                     </div>
                     <div className="p-4 flex w-full justify-center space-x-5 font-semibold">
-                        <button className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 w-36">
+                        <button
+                            disabled={processing}
+                            className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 w-36"
+                        >
                             Confirm
                         </button>
                         <button
@@ -75,5 +77,3 @@ function CancelModal({ AppointmentSelectdId }) {
         </>
     );
 }
-
-export default CancelModal;

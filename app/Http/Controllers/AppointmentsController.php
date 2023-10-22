@@ -9,20 +9,20 @@ use App\Models\Doctor;
 use App\Models\Service;
 use App\Notifications\AppointmentApprovedNotification;
 use App\Notifications\AppointmentCancelNotification;
+use App\Notifications\AppointmentDeclineNotification;
 use App\Notifications\AppointmentRequestNotification;
 use App\Notifications\AppointmentRescheduleNotification;
 use App\Notifications\UserAppointmentRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class AppointmentsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $user = auth()->user();
@@ -70,9 +70,7 @@ class AppointmentsController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $user = auth()->user();
@@ -91,9 +89,7 @@ class AppointmentsController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreAppointmentRequest $request)
     {
         $appointment = $request->validated();
@@ -108,7 +104,7 @@ class AppointmentsController extends Controller
         // return to_route('appointment.show')->with('message', 'Appointment has been created!');
         if ($doctor) {
             // Notify the doctor about the new appointment request
-            $doctor->notify(new AppointmentRequestNotification($appointment->doctor, $appointment->user));
+            $doctor->notify(new AppointmentRequestNotification($doctor, $user));
 
             return redirect()->route('appointment.show')->with('message', 'Appointment has been created!');
         } else {
@@ -117,9 +113,7 @@ class AppointmentsController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Appointment $appointment)
     {
 
@@ -158,9 +152,6 @@ class AppointmentsController extends Controller
             return Inertia::render('Users/Appointments', [
                 'appointments' => $appointments,
                 'notifications' => $notifications,
-
-
-
             ]);
         } else if ($user->role === 'doctor') {
 
@@ -170,6 +161,7 @@ class AppointmentsController extends Controller
                 'appointments.date',
                 'appointments.time',
                 'appointments.status',
+                'appointments.created_at',
                 'services.name as service_name',
             )
                 ->join('services', 'appointments.service_id', '=', 'services.id')
@@ -178,6 +170,7 @@ class AppointmentsController extends Controller
             $appointments->transform(function ($appointment) {
                 $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
                 $appointment->formatted_time = Carbon::parse($appointment->time)->format('g:i A');
+                $appointment->formatted_created_at = Carbon::parse($appointment->created_at)->format('D. M. d, Y');
                 return $appointment;
             });
 
@@ -186,7 +179,7 @@ class AppointmentsController extends Controller
             $notifications = $doctor->unreadNotifications;
             // $doctor->unreadNotifications->markAsRead();
 
-            return Inertia::render('Admin/AdminAppointments', [
+            return Inertia::render('Admin/AdminAppointmentRequests', [
                 'user' => auth()->user(),
                 'appointments' => $appointments,
                 'notifications' => $notifications,
@@ -196,70 +189,152 @@ class AppointmentsController extends Controller
             return "error";
         }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Appointment $appointment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Appointment $appointment, $id)
     {
-        $user = auth()->user();
-        if ($user->role === 'patient') {
 
-            $validatedData = $request->validate([
-                'id' => 'required|exists:appointments,id',
-                'date' => 'required|date',
-                'time' => 'required|string',
-            ]);
+        $validatedData = $request->validate([
+            'id' => 'required|exists:appointments,id',
+            'date' => 'required|date',
+            'time' => 'required|string',
+        ]);
 
-            $appointment = Appointment::findOrFail($validatedData['id']);
+        $appointment = Appointment::findOrFail($validatedData['id']);
 
-            $validatedData['status'] = 0;
-            $validatedData['updated_at'] = now();
+        $validatedData['status'] = 0;
+        $validatedData['updated_at'] = now();
 
-            DB::table('appointments')->where('id', $validatedData['id'])->update($validatedData);
+        DB::table('appointments')->where('id', $validatedData['id'])->update($validatedData);
 
-            $doctor = $appointment->doctor;
-            $user = $appointment->user;
+        $doctor = $appointment->doctor;
+        $user = $appointment->user;
 
-            if ($user) {
+        if ($user) {
 
-                $notification = new AppointmentRescheduleNotification($doctor, $user);
-                $doctor->notify($notification);
-
-                return redirect()->back();
-            } else {
-
-                return redirect()->route('appointment.show')->with('message', 'Error rescheduling the appointment.');
-            }
+            $notification = new AppointmentRescheduleNotification($doctor, $user);
+            $doctor->notify($notification);
 
             return redirect()->back();
-        } else if ($user->role === 'doctor') {
+        } else {
 
-            $appointment = Appointment::findOrFail($id);
-
-            DB::table('appointments')->where('id', $appointment['id'])->update(['status' => '1']);
-
-            $doctor = $appointment->doctor;
-            $user = $appointment->user;
-
-            if ($user) {
-
-                $user->notify(new AppointmentApprovedNotification($appointment->user, $appointment->doctor));
-
-                return redirect()->route('appointment-requests.show')->with('message', 'Appointment Approved!');
-            } else {
-
-                return redirect()->route('appointment.show')->with('message', 'Error approving the appointment.');
-            }
+            return redirect()->route('appointment.index')->with('message', 'Error rescheduling the appointment.');
         }
+
+        return redirect()->back();
+    }
+
+    public function updateApprove(Request $request, Appointment $appointment, $id)
+    {
+        $validatedData = $request->validate([
+            'id' => 'required|exists:appointments,id',
+        ]);
+
+        DB::table('appointments')->where('id', $validatedData['id'])->update(['status' => '1']);
+
+        $appointment = Appointment::findOrFail($id);
+
+        $doctor = $appointment->doctor;
+        $user = $appointment->user;
+
+
+        if ($user) {
+
+            $user->notify(new AppointmentApprovedNotification($user, $doctor));
+
+            return redirect()->back();
+        } else {
+            return redirect()->back()->with('message', 'Error approving the appointment.');
+        }
+    }
+
+    public function updateDecline(Request $request, Appointment $appointment,  $id)
+    {
+        $validatedData = $request->validate([
+            'id' => 'required|exists:appointments,id',
+        ]);
+
+        DB::table('appointments')->where('id', $validatedData['id'])->update(['status' => '3']);
+
+        $appointment = Appointment::findOrFail($id);
+
+        $doctor = $appointment->doctor;
+        $user = $appointment->user;
+
+
+        if ($user) {
+
+            $user->notify(new AppointmentDeclineNotification($user, $doctor));
+
+            return redirect()->back();
+        } else {
+            return redirect()->back()->with('message', 'Error approving the appointment.');
+        }
+    }
+
+    public function showHistory(Appointment $appointment)
+    {
+        $appointments = Appointment::select(
+            'appointments.id',
+            'appointments.name',
+            'appointments.date',
+            'appointments.time',
+            'appointments.status',
+            'appointments.created_at',
+            'services.name as service_name',
+        )
+            ->join('services', 'appointments.service_id', '=', 'services.id')
+            ->where('status', 2)
+            ->paginate(6);
+        $appointments->transform(function ($appointment) {
+            $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
+            $appointment->formatted_time = Carbon::parse($appointment->time)->format('g:i A');
+            $appointment->formatted_created_at = Carbon::parse($appointment->created_at)->format('D. M. d, Y');
+            return $appointment;
+        });
+
+        $doctor = Auth::user();
+
+        $notifications = $doctor->unreadNotifications;
+        // $doctor->unreadNotifications->markAsRead();
+
+        return Inertia::render('Admin/AdminHistory', [
+            'user' => auth()->user(),
+            'appointments' => $appointments,
+            'notifications' => $notifications,
+
+        ]);
+    }
+    public function showCanceledAppointments(Appointment $appointment)
+    {
+        $appointments = Appointment::select(
+            'appointments.id',
+            'appointments.name',
+            'appointments.date',
+            'appointments.time',
+            'appointments.status',
+            'appointments.created_at',
+            'services.name as service_name',
+        )
+            ->join('services', 'appointments.service_id', '=', 'services.id')
+            ->where('status', 3)
+            ->paginate(6);
+        $appointments->transform(function ($appointment) {
+            $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
+            $appointment->formatted_time = Carbon::parse($appointment->time)->format('g:i A');
+            $appointment->formatted_created_at = Carbon::parse($appointment->created_at)->format('D. M. d, Y');
+            return $appointment;
+        });
+
+        $doctor = Auth::user();
+
+        $notifications = $doctor->unreadNotifications;
+        // $doctor->unreadNotifications->markAsRead();
+
+        return Inertia::render('Admin/CanceledAppointments', [
+            'user' => auth()->user(),
+            'appointments' => $appointments,
+            'notifications' => $notifications,
+
+        ]);
     }
 
 
@@ -269,38 +344,109 @@ class AppointmentsController extends Controller
 
         DB::table('appointments')->where('id', $appointment['id'])->update(['status' => '3', 'updated_at' => now()]);
 
-        return redirect()->route('appointment-requests.show')->with('message', 'Appointment Has been canceled!');
+        $doctor = $appointment->doctor;
+        $user = $appointment->user;
+
+        if ($user) {
+
+            $notification = new  AppointmentCancelNotification($doctor, $user);
+            $doctor->notify($notification);
+
+            return redirect()->back();
+        } else {
+
+            return redirect()->route('appointment.index')->with('message', 'Error rescheduling the appointment.');
+        }
+
+        return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function markAsDone(Request $request, Appointment $appointment, $id)
+    {
+        $appointment = Appointment::findOrFail($id);
+
+        DB::table('appointments')->where('id', $appointment['id'])->update(['status' => '2', 'updated_at' => now()]);
+
+        return redirect()->back();
+    }
+
     public function destroy(Appointment $appointment, $id)
     {
 
         $appointments = Appointment::findOrFail($id);
+        $appointments->delete();
+    }
 
-        if ($appointments) {
+    public function destroyAdmin(Appointment $appointment, $id)
+    {
+        $appointments = Appointment::findOrFail($id);
+        $appointments->delete();
+    }
 
-            $doctor = $appointments->doctor;
-            $user = $appointments->user;
 
-            if ($user) {
-                // Create notification instance with appointment details
-                $notification = new AppointmentCancelNotification($doctor, $user, $appointments);
+    //admin 
+    public function showMyappointments()
+    {
+        $user = Auth::user();
 
-                // Notify the user
-                $doctor->notify($notification);
+        $notifications = $user->unreadNotifications;
+        return Inertia::render('Admin/AdminMyAppointments', [
+            'notifications' => $notifications
+        ]);
+    }
 
-                // Now you can delete the appointment
-                $appointments->delete();
+    public function createAppointments()
+    {
+        $user = Auth::user();
 
-                return redirect()->back();
-            } else {
-                return redirect()->back()->with('error', 'User not found.');
-            }
-        } else {
-            return redirect()->back()->with('message', 'Error deleting your appointment!');
-        }
+        $notifications = $user->unreadNotifications;
+        return Inertia::render('Admin/AdminAppointmentForm', [
+            'notifications' => $notifications,
+            'doctors' => Doctor::all(),
+            'services' => Service::all(),
+        ]);
+    }
+
+    public function showAppointments()
+    {
+        $appointments = Appointment::select(
+            'appointments.id',
+            'appointments.name',
+            'appointments.date',
+            'appointments.time',
+            'appointments.status',
+            'appointments.created_at',
+            'services.name as service_name',
+        )
+            ->join('services', 'appointments.service_id', '=', 'services.id')
+            ->where('status', 1)
+            ->paginate(6);
+        $appointments->transform(function ($appointment) {
+            $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
+            $appointment->formatted_time = Carbon::parse($appointment->time)->format('g:i A');
+            $appointment->formatted_created_at = Carbon::parse($appointment->created_at)->format('D. M. d, Y');
+            return $appointment;
+        });
+
+        $doctor = Auth::user();
+
+        $notifications = $doctor->unreadNotifications;
+        // $doctor->unreadNotifications->markAsRead();
+
+        return Inertia::render('Admin/AdminAppointments', [
+            'user' => auth()->user(),
+            'appointments' => $appointments,
+            'notifications' => $notifications,
+
+        ]);
+    }
+
+    public function markAsDoneAdmin(Request $request, Appointment $appointment, $id)
+    {
+        $appointment = Appointment::findOrFail($id);
+
+        DB::table('appointments')->where('id', $appointment['id'])->update(['status' => '2', 'updated_at' => now()]);
+
+        return redirect()->back();
     }
 }

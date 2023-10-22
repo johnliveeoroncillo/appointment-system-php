@@ -38,11 +38,11 @@ const RescheduleModal = ({ appointmentList }) => {
             data,
             {
                 onSuccess: () => {
-                    setIsModalOpen(false),
-                        toast.success("Schedule successfully updated!!", {
-                            position: toast.POSITION.BOTTOM_RIGHT,
-                            className: "toast-success",
-                        });
+                    console.log("triggered");
+                    toast.success("Schedule successfully updated!!", {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        className: "toast-success",
+                    });
                 },
             }
         );

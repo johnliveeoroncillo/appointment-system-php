@@ -2,11 +2,33 @@ import Dropdown from "@/Components/Dropdown";
 import Pagination from "@/Components/PaginationButton";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
-import { Head, usePage } from "@inertiajs/react";
-import React from "react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import DeleteUser from "./DeleteUser";
 
 export default function AdminUsers({ auth, users }) {
     const userList = users.data || "";
+
+    const createUser = () => {
+        router.visit("/users/new-user");
+    };
+
+    const viewProfile = (userId) => {
+        console.log("View Profile clicked");
+        router.visit(`/users/user-profile/${userId}`);
+    };
+
+    const { flash } = usePage().props;
+    const [toastDisplayed, setToastDisplayed] = useState(false);
+
+    useEffect(() => {
+        if (flash.message && !toastDisplayed) {
+            toast.success(flash.message);
+            setToastDisplayed(true);
+        }
+    }, [flash.message, toastDisplayed]);
+
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -15,14 +37,17 @@ export default function AdminUsers({ auth, users }) {
                     <span>
                         <h1 className="">Users {users.name}</h1>
                     </span>
-                    <button className="text-sm font-normal px-5 py-2 rounded-md bg-green-700 text-white">
+                    <button
+                        onClick={createUser}
+                        className="text-sm font-normal px-5 py-2 rounded-md bg-green-700 text-white"
+                    >
                         Add User
                     </button>
                 </div>
             }
         >
             <Head title="Users" />
-            <div className="h-screen w-full md:px-10">
+            <div className="h-[81.3vh] w-full md:px-10">
                 <div className="w-full md:px-10">
                     <div className="">
                         {userList.length > 0 ? (
@@ -65,24 +90,21 @@ export default function AdminUsers({ auth, users }) {
                                                 {item.formatted_createdAt}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <Dropdown>
-                                                    {/* Your trigger element goes here */}
-                                                    <Dropdown.Trigger>
-                                                        <button className="w-6 h-6 flex justify-center items-center rounded-full hover:bg-gray-300">
-                                                            <EllipsisVerticalIcon className="w-5 h-5 " />
-                                                        </button>
-                                                    </Dropdown.Trigger>
-
-                                                    {/* Dropdown content goes here */}
-                                                    <Dropdown.Content>
-                                                        <Dropdown.Link href="#">
-                                                            View User Profile
-                                                        </Dropdown.Link>
-                                                        <Dropdown.Link href="#">
-                                                            Delete User
-                                                        </Dropdown.Link>
-                                                    </Dropdown.Content>
-                                                </Dropdown>
+                                                <div className="space-x-5">
+                                                    <button
+                                                        onClick={() =>
+                                                            viewProfile(item.id)
+                                                        }
+                                                        className="text-blue-400 hover:text-blue-600"
+                                                    >
+                                                        View Profile
+                                                    </button>
+                                                    <button className="text-red-400 hover:text-red-600">
+                                                        <DeleteUser
+                                                            userId={item.id}
+                                                        />
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

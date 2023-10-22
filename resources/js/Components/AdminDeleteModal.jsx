@@ -4,9 +4,9 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { router } from "@inertiajs/react";
 import "react-toastify/dist/ReactToastify.css";
 
-function DeleteModal({ isOpen, selectedAppointmentId, onClose, toast }) {
-    const deleteAppointment = (id) => {
-        router.delete(`/appointment/delete/${id}`, {
+function AdminDeleteModal({ isOpen, selectedAppointmentId, onClose, toast }) {
+    const deleteAppointments = (id) => {
+        router.delete(`/appointment/admin/delete/${id}`, {
             onSuccess: () => {
                 onClose();
                 toast("Deleted Successfully");
@@ -15,7 +15,7 @@ function DeleteModal({ isOpen, selectedAppointmentId, onClose, toast }) {
     };
 
     return (
-        <div className="w-96 bg-green-100">
+        <div>
             <Modal show={isOpen} onClose={onClose} maxWidth="md">
                 <div className="p-4 flex items-center justify-center flex-col">
                     <div className="w-16 h-16 bg-red-100/50 flex items-center justify-center rounded-full">
@@ -35,7 +35,7 @@ function DeleteModal({ isOpen, selectedAppointmentId, onClose, toast }) {
                         <button
                             className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 w-36"
                             onClick={() =>
-                                deleteAppointment(selectedAppointmentId)
+                                deleteAppointments(selectedAppointmentId)
                             }
                         >
                             Delete
@@ -53,4 +53,4 @@ function DeleteModal({ isOpen, selectedAppointmentId, onClose, toast }) {
     );
 }
 
-export default DeleteModal;
+export default AdminDeleteModal;

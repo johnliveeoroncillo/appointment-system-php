@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import Textarea from "@/Components/Textarea";
 import PrimaryButton from "@/Components/PrimaryButton";
 import BackButton from "@/Components/BackButton";
+import InputError from "@/Components/InputError";
 
 export default function MedicalChartForm({ auth, medicalChart }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -85,13 +86,17 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         placeholder="Name"
                                         onChange={handleOnChange}
                                     />
+                                    <InputError
+                                        message={errors.name}
+                                        className="mt-2"
+                                    />
                                 </div>
                                 <div className="md:flex md:space-x-5 mt-5">
                                     {/* gender */}
                                     <div className="w-full ">
                                         <div>
                                             <InputLabel
-                                                htmlFor="genter"
+                                                htmlFor="gender"
                                                 value="Gender"
                                             />
                                             <select
@@ -116,6 +121,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                     Female
                                                 </option>
                                             </select>
+                                            <InputError
+                                                message={errors.gender}
+                                                className="mt-2"
+                                            />
                                         </div>
                                     </div>
                                     {/* age */}
@@ -134,6 +143,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 onChange={handleOnChange}
                                             />
                                         </div>
+                                        <InputError
+                                            message={errors.age}
+                                            className="mt-2"
+                                        />
                                     </div>
                                 </div>
                                 <div className="md:flex md:space-x-5 md:space-y-0 space-y-5 mt-5 w-full">
@@ -153,6 +166,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 onChange={handleOnChange}
                                             />
                                         </div>
+                                        <InputError
+                                            message={errors.height}
+                                            className="mt-2"
+                                        />
                                     </div>
                                     {/* weight */}
                                     <div className="">
@@ -169,6 +186,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 placeholder="Weight"
                                                 onChange={handleOnChange}
                                             />
+                                            <InputError
+                                                message={errors.weight}
+                                                className="mt-2"
+                                            />
                                         </div>
                                     </div>
                                     <div className="">
@@ -184,6 +205,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 value={data.bp}
                                                 placeholder="Blood Pressure"
                                                 onChange={handleOnChange}
+                                            />
+                                            <InputError
+                                                message={errors.bp}
+                                                className="mt-2"
                                             />
                                         </div>
                                     </div>
@@ -202,6 +227,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         value={data.illness}
                                         onChange={handleOnChange}
                                     />
+                                    <InputError
+                                        message={errors.illness}
+                                        className="mt-2"
+                                    />
                                 </div>
                                 {/* physical exam */}
                                 <div className="mt-5">
@@ -216,6 +245,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         className="w-full"
                                         placeholder="Physical exam"
                                         onChange={handleOnChange}
+                                    />
+                                    <InputError
+                                        message={errors.physical_exam}
+                                        className="mt-2"
                                     />
                                 </div>
                             </div>
@@ -235,6 +268,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                             placeholder="Medical history"
                                             onChange={handleOnChange}
                                         />
+                                        <InputError
+                                            message={errors.medical_history}
+                                            className="mt-2"
+                                        />
                                     </div>
                                     {/* allergies */}
                                     <div className="w-full">
@@ -249,6 +286,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                             className="w-full"
                                             placeholder="Allergies"
                                             onChange={handleOnChange}
+                                        />
+                                        <InputError
+                                            message={errors.allergies}
+                                            className="mt-2"
                                         />
                                     </div>
                                 </div>
@@ -266,6 +307,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         placeholder="Family history"
                                         onChange={handleOnChange}
                                     />
+                                    <InputError
+                                        message={errors.family_history}
+                                        className="mt-2"
+                                    />
                                 </div>
                                 {/* socail_history */}
                                 <div className="md:mt-1">
@@ -280,6 +325,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         className="w-full"
                                         placeholder="Social history"
                                         onChange={handleOnChange}
+                                    />
+                                    <InputError
+                                        message={errors.social_history}
+                                        className="mt-2"
                                     />
                                 </div>
                                 {/* diagnosis */}
@@ -296,6 +345,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         placeholder="Diagnosis"
                                         onChange={handleOnChange}
                                     />
+                                    <InputError
+                                        message={errors.diagnosis}
+                                        className="mt-2"
+                                    />
                                 </div>
                                 {/* plan */}
                                 <div className="md:mt-1">
@@ -307,6 +360,10 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                         className="w-full"
                                         placeholder="Plan"
                                         onChange={handleOnChange}
+                                    />
+                                    <InputError
+                                        message={errors.plan}
+                                        className="mt-2"
                                     />
                                 </div>
                             </div>

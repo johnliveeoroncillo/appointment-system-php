@@ -1,7 +1,7 @@
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { Link } from "@inertiajs/react";
 import "../../css/GuestLayout.css";
-import ApplicationLogo from "@/Components/ApplicationLogo";
+import GreenLogo from "@/Components/GreenLogo";
 
 export default function Guest({ children }) {
     return (
@@ -15,12 +15,7 @@ export default function Guest({ children }) {
                             </Link>
                         </button>
                         <Link href="/">
-                            {/* <img
-                                src="images/logo-green.png"
-                                alt="Logo image"
-                                className="h-auto w-[150px] slide-up"
-                            /> */}
-                            <ApplicationLogo></ApplicationLogo>
+                            <GreenLogo />
                         </Link>
                         <h2 className="text-2xl font-semibold text-center font-roboto slide-up">
                             Vicente Lao, MD Medical Clinic

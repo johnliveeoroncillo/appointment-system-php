@@ -72,4 +72,6 @@ Route::middleware(['middleware' => 'auth:doctor'])->group(function () {
     //for doctor
     Route::post('logout/doctor', [DoctorLoginController::class, 'destroy'])
         ->name('doctor.logout');
+
+    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 });

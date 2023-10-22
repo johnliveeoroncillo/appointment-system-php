@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AppointmentApprovedNotification extends Notification
+class AppointmentDeclineNotification extends Notification
 {
     use Queueable;
 
@@ -67,7 +67,7 @@ class AppointmentApprovedNotification extends Notification
             return [
                 'user_id' => $user->id,
                 'doctor_id' => $doctor->id,
-                'message' => 'Your appointment request has been approved by Dr. ' . $user->name,
+                'message' => 'Dr.' . $user->name . ' Cancel your appointment request'
             ];
         }
     }

@@ -9,35 +9,13 @@ import {
     PlusIcon,
     TrashIcon,
 } from "@heroicons/react/24/solid";
-import Pagination from "@/Components/PaginationButton";
 import CancelModal from "@/Components/CancelModal";
-import RescheduleModal from "@/Components/RescheduleModal";
 import AppointmentCards from "@/Components/AppointmentCards";
-import axios, { Axios } from "axios";
+import MarkDone from "@/Components/MarkDone";
 
 export default function Appointments({ auth, appointments }) {
     const { flash } = usePage().props;
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
-
-    const openModal = (appointmentId) => {
-        setSelectedAppointmentId(appointmentId);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setSelectedAppointmentId(null);
-        setIsModalOpen(false);
-    };
-    //display toast
-    const showToastNotification = (message) => {
-        toast.error(message, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-        });
-    };
-
-    // display toast using usestate and useeffect
     const [toastDisplayed, setToastDisplayed] = useState(false);
 
     useEffect(() => {
@@ -46,6 +24,7 @@ export default function Appointments({ auth, appointments }) {
             setToastDisplayed(true);
         }
     }, [flash.message, toastDisplayed]);
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -92,24 +71,18 @@ export default function Appointments({ auth, appointments }) {
                                         status={
                                             item.status ? "Approved" : "Pending"
                                         }
-                                        onClick={() => openModal(item.id)}
                                         data={item}
+                                        selectedId={item}
                                     />
                                 ))}
                         </div>
                     ) : (
                         <div className="w-full h-96 text-center flex items-center justify-center">
                             <h1 className="text-xl text-gray-400">
-                                You have not set appointment yet!{" "}
+                                You have not set appointment yet!
                             </h1>
                         </div>
                     )}
-                    <CancelModal
-                        isOpen={isModalOpen}
-                        selectedAppointmentId={selectedAppointmentId}
-                        onClose={closeModal}
-                        toast={showToastNotification}
-                    />
                 </div>
             </div>
         </AuthenticatedLayout>

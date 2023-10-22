@@ -8,7 +8,7 @@ const ServiceCard = ({ image, altText, title, description, icon }) => {
     return (
         <>
             <div
-                className="w-full my-5 overflow-hidden rounded-md bg-textColor drop-shadow-lg"
+                className="w-72 my-5 overflow-hidden rounded-md bg-textColor drop-shadow-lg"
                 data-aos="flip-left"
                 data-aos-easing="ease-out-cubic"
                 data-aos-duration="2000"

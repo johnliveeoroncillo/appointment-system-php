@@ -17,9 +17,10 @@ class Appointment extends Model
     const STATUS_CANCELED = 3;
 
     protected $fillable = [
+        'id',
+        'status',
         'user_id',
         'name',
-        // 'email',
         'date',
         'time',
         'doctor_id',

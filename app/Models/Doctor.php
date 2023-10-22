@@ -27,6 +27,10 @@ class Doctor extends Model implements Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'mobile_number',
+        'specialization',
+        'license_address',
+        'clinic_address',
         'password',
     ];
 

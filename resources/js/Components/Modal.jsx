@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function Modal({
     children,
@@ -41,7 +42,6 @@ export default function Modal({
                 >
                     <div className="absolute inset-0 bg-gray-500/75" />
                 </Transition.Child>
-
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -54,7 +54,15 @@ export default function Modal({
                     <Dialog.Panel
                         className={`mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-96 sm:w-full sm:mx-auto ${maxWidthClass}`}
                     >
-                        {children}
+                        <div className="">
+                            <button
+                                onClick={onClose}
+                                className="w-full px-4 flex justify-end mt-5"
+                            >
+                                <XMarkIcon className="w-5 h-5 text-gray-600" />
+                            </button>
+                            {children}
+                        </div>
                     </Dialog.Panel>
                 </Transition.Child>
             </Dialog>

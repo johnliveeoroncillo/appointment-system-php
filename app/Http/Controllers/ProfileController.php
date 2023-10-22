@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\UpdateDoctorRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,6 +31,21 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function adminEdit(Request $request)
+    {
+        $user = Auth::user();
+
+        $notifications = $user->unreadNotifications;
+
+        return Inertia::render('Admin/AdminProfile/EditAdminProfile', [
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'status' => session('status'),
+            'notifications' => $notifications,
+
+        ]);
+    }
+
+
     /**
      * Update the user's profile information.
      */
@@ -44,6 +60,19 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit');
+    }
+
+    public function updateAdmin(UpdateDoctorRequest $request): RedirectResponse
+    {
+        $request->user()->fill($request->validated());
+
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
+        }
+
+        $request->user()->save();
+
+        return Redirect::route('doctor.profile.edit');
     }
 
     /**

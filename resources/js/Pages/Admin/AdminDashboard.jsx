@@ -15,32 +15,39 @@ import AdminAppointments from "./AdminAppointments";
 
 export default function AdminDashboard({ appointments, services, auth }) {
     const { doctors, users } = usePage().props;
+
+    // Filter and sort appointments
+    const activeAppointments = appointments
+        .filter((appointment) => appointment.status === 1)
+        .sort(
+            (a, b) =>
+                new Date(a.date + " " + a.time) -
+                new Date(b.date + " " + b.time)
+        );
+
+    // Get the 4 closest upcoming appointments
+    const closestActiveAppointments = activeAppointments.slice(0, 4);
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
             header={<h1 className="">Dashboard</h1>}
         >
             <Head title="Dashboard" />
-            <div className="h-screen w-full flex">
-                <div className="w-full md:w-[400px] border-r border-gray-200 p-5 h-[80vh] overflow-y-scroll">
+            <div className="h-[81.3vh] w-full flex ">
+                <div className="w-full md:w-[400px] border-r border-gray-200 p-5 ">
                     <h1 className="text-sm md:text-lg text-gray-600">
                         Upcoming Appointments
                     </h1>
-                    {appointments.some(
-                        (appointment) => appointment.status === 1
-                    ) ? (
-                        appointments.map(
-                            (appointment) =>
-                                appointment.status === 1 && (
-                                    <AppointmentCard
-                                        key={appointment.id}
-                                        name={appointment.name}
-                                        service={appointment.service_name}
-                                        date={appointment.formatted_date}
-                                        time={appointment.formatted_time}
-                                    />
-                                )
-                        )
+                    {closestActiveAppointments.length > 0 ? (
+                        closestActiveAppointments.map((appointment) => (
+                            <AppointmentCard
+                                key={appointment.id}
+                                name={appointment.name}
+                                service={appointment.service_name}
+                                date={appointment.formatted_date}
+                                time={appointment.formatted_time}
+                            />
+                        ))
                     ) : (
                         <p className="text-gray-500 text-center py-52">
                             No upcoming appointments.
@@ -93,19 +100,6 @@ export default function AdminDashboard({ appointments, services, auth }) {
                             }
                         />
                     </div>
-                    {/* <div className="h-full w-full bg-white">
-                        <div className="w-full h-10 flex items-center justify-between border-b border-gray-300 px-5">
-                            <p className="text-sm">
-                                Recent Appointment Request
-                            </p> */}
-                    {/* <Link
-                                href="/appointments/requests"
-                                className="bg-teal-900 px-5 rounded-md text-white text-sm py-1 hover:bg-green-500"
-                            >
-                                View Details
-                            </Link> TODO: if no purpose found delete */}
-                    {/* </div>
-                    </div> */}
                 </div>
             </div>
         </AdminAuthenticatedLayout>

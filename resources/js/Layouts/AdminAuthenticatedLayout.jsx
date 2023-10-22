@@ -5,17 +5,23 @@ import Sidebar from "@/Components/Sidebar";
 import { BellAlertIcon } from "@heroicons/react/24/solid";
 import { Link, usePage } from "@inertiajs/react";
 import React, { useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 export default function AdminAuthenticatedLayout({ user, header, children }) {
     const { notifications } = usePage().props;
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     return (
-        <div className="m-w-full min-w-full max-h-screen min-h-screen flex overflow-hidden">
+        <div className="m-w-full min-w-full max-h-full min-h-full flex overflow-x-hidden ">
             <div className="w-16 md:w-24">
                 <Sidebar />
             </div>
-            <div className="w-full bg-gray-100">
+            <div className="h-screen flex w-full items-center md:hidden justify-center">
+                <p className="text-3xl text-gray-400 text-center">
+                    this is not available in mobile view
+                </p>
+            </div>
+            <div className="w-full bg-gray-100 hidden md:block">
                 <nav className="bg-white border-b border-gray-200">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-end h-16">
@@ -64,7 +70,9 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
 
                                         <Dropdown.Content>
                                             <Dropdown.Link
-                                                href={route("profile.edit")}
+                                                href={route(
+                                                    "doctor.profile.edit"
+                                                )}
                                             >
                                                 Profile
                                             </Dropdown.Link>
@@ -88,13 +96,6 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                         className="relative"
                                     >
                                         <BellAlertIcon className="w-6 h-6 text-gray-400" />
-                                        {/* {notifications.length > 0 && (
-                                            <span className="absolute -top-1 -right-1 w-4 h-4 text-center text-white text-[10px] start-100 border border-white translate-middle badge rounded-full bg-danger">
-                                                {notifications.length > 9
-                                                    ? "9+"
-                                                    : notifications.length}
-                                            </span>
-                                        )} */}
                                     </Link>
                                 </div>
                                 <button
@@ -156,7 +157,9 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                             </div>
 
                             <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink href={route("profile.edit")}>
+                                <ResponsiveNavLink
+                                    href={route("doctor.profile.edit")}
+                                >
                                     Profile
                                 </ResponsiveNavLink>
                                 <ResponsiveNavLink
@@ -177,7 +180,20 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                         </div>
                     </header>
                 )}
+
                 {children}
+                <ToastContainer
+                    position="bottom-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
             </div>
         </div>
     );

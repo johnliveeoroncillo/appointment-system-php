@@ -25,7 +25,13 @@ export default function Notification({ auth }) {
                                 New Appointment Request
                             </h3>
                         </div>
-                        <div className="flex h-auto overflow-hidden flex-col">
+                        <div
+                            className={`flex flex-col ${
+                                notifications.length > 6
+                                    ? "h-96 overflow-y-scroll"
+                                    : "h-auto"
+                            } `}
+                        >
                             {notifications.length === 0 ? (
                                 <h1 className="md:px-32 text-center py-8 md:py-16 text-sm md:text-lg text-gray-400">
                                     No new notification

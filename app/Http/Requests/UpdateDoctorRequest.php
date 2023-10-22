@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Doctor;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateDoctorRequest extends FormRequest
 {
@@ -22,10 +24,16 @@ class UpdateDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:doctors,email' . $this->route('doctor'),
-            'experties' => 'required|string|max:255',
-            'address' => 'required|string|max:255'
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['email', 'max:255', Rule::unique(Doctor::class)->ignore($this->user()->id)],
+            'mobile_number' =>
+            ['required', 'string', 'max:255'],
+            'specialization' =>
+            ['required', 'string', 'max:255'],
+            'license_address' =>
+            ['required', 'string', 'max:255'],
+            'clinic_address' =>
+            ['required', 'string', 'max:255'],
         ];
     }
 }

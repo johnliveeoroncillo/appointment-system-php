@@ -17,10 +17,7 @@ class ServiceSeeder extends Seeder
             'name' => 'General Checkup',
             'description' => 'A physical examination is conducted to look for any signs of health issues. Depending on your age and risk factors, you may also have various tests and screenings.',
         ]);
-        DB::table('services')->insert([
-            'name' => 'Confinement',
-            'description' => 'Patient stays in a hospital for medical treatment, care, or observation. During this time, individuals receive medical attention from healthcare professionals to diagnose, treat, or manage health conditions.',
-        ]);
+
         DB::table('services')->insert([
             'name' => 'Hospitalization',
             'description' => 'Involves admitting a patient to a hospital for medical care and treatment. It is typically necessary for serious illnesses, surgeries, or medical procedures that require close monitoring, specialized equipment, or round-the-clock medical attention.',

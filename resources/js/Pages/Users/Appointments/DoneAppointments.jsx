@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import DeleteModal from "@/Components/CancelModal";
 import AppointmentCards from "@/Components/AppointmentCards";
 import { Head, Link, usePage } from "@inertiajs/react";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
+import DeleteModal from "@/Components/DeleteModal";
 
 export default function DoneAppointments({ auth, appointments }) {
     const { flash } = usePage().props;
@@ -33,21 +33,8 @@ export default function DoneAppointments({ auth, appointments }) {
             header={
                 <div className="w-full flex justify-between items-center">
                     <h2 className="font-semibold md:text-xl text-lg text-gray-800 leading-tight">
-                        Appointment
+                        Appointment History
                     </h2>
-                    <span>
-                        <Link
-                            className="hover:bg-secondaryColor hidden md:block text-white px-5 py-2 font-bold rounded-md bg-teal-900"
-                            href="/appointments/create-form"
-                        >
-                            Set Appointment
-                        </Link>
-                        <div className="bg-primaryColor py-1 px-1 md:hidden rounded-md">
-                            <Link href="/appointments/create-form">
-                                <PlusIcon className="w-6 h-6 text-white" />
-                            </Link>
-                        </div>
-                    </span>
                 </div>
             }
         >

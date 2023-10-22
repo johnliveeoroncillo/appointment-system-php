@@ -1,5 +1,7 @@
 import AdminDeleteModal from "@/Components/AdminDeleteModal";
+import CancelModal from "@/Components/CancelModal";
 import Cards from "@/Components/Cards";
+import DeleteModal from "@/Components/DeleteModal";
 import Pagination from "@/Components/PaginationButton";
 import ViewDetails from "@/Components/ViewDetails";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
@@ -7,12 +9,11 @@ import { Head, router } from "@inertiajs/react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-export default function AdminHistory({ auth, appointments }) {
+export default function CanceledAppointments({ auth, appointments }) {
     const appointmentList = appointments.data || "";
-    const goToCanceled = () => {
-        router.visit("/appointment/doctor/canceled");
+    const goToHistory = () => {
+        router.visit("/appointment/doctor/history");
     };
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
 
@@ -39,16 +40,16 @@ export default function AdminHistory({ auth, appointments }) {
                     <h1 className="">History</h1>
                     <span>
                         <button
-                            onClick={goToCanceled}
+                            onClick={goToHistory}
                             className="text-sm text-gray-400 hover:text-gray-700"
                         >
-                            Canceled Appointments
+                            Finished Appointments
                         </button>
                     </span>
                 </div>
             }
         >
-            <Head title="History" />
+            <Head title="Canceled Appointments" />
             <div className="h-[81.3vh] w-full flex">
                 <div className="w-full md:px-10">
                     {appointmentList.length > 0 ? (
@@ -85,9 +86,9 @@ export default function AdminHistory({ auth, appointments }) {
                                                 {item.formatted_created_at}
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className="badge bg-success px-3 rounded-md text-white">
-                                                    {item.status === 2
-                                                        ? "Done"
+                                                <span className="badge bg-danger px-3 rounded-md text-white">
+                                                    {item.status === 3
+                                                        ? "Canceled"
                                                         : ""}
                                                 </span>
                                             </td>
@@ -109,7 +110,7 @@ export default function AdminHistory({ auth, appointments }) {
                     ) : (
                         <div className="hidden md:flex h-[70vh] items-center">
                             <h1 className="text-center w-full text-xl text-gray-400">
-                                You have no finished appointment yet!
+                                You have no canceled appointment yet!
                             </h1>
                         </div>
                     )}
@@ -128,7 +129,7 @@ export default function AdminHistory({ auth, appointments }) {
                     ) : (
                         <div className="md:hidden h-[70vh] flex items-center">
                             <h1 className="text-center w-full text-xl text-gray-400">
-                                You have no finished appointment yet!
+                                You have no canceled appointment yet!
                             </h1>
                         </div>
                     )}

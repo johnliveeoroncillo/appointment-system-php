@@ -31,15 +31,6 @@ export default function Register() {
         post(route("register"));
     };
 
-    const closeOtherForm = () => {
-        setDoctorForm(false);
-        setAdminForm(false);
-    };
-    const openDoctorForm = () => {
-        setDoctorForm(true);
-        setAdminForm(false);
-    };
-
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const togglePasswordVisibility = () => {

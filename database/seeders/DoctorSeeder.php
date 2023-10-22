@@ -20,8 +20,9 @@ class DoctorSeeder extends Seeder
             'email' => 'doctor@example.com',
             'password' => Hash::make('12345678'),
             'mobile_number' => '09393939322',
-            'expertise' => 'general practioner',
-            'address' => 'Tigaon Camarines Sur'
+            'specialization' => ' General Practitioner',
+            'license_address' => 'LIC4144816',
+            'clinic_address' => 'P. T. Leelin St, Tigaon, Filipijnen'
         ]);
     }
 }

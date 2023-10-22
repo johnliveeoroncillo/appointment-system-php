@@ -1,11 +1,11 @@
-import { Head, useForm } from "@inertiajs/react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import React from "react";
+import { Head, useForm } from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 
-export default function AppointmentForm({ auth, services, doctors }) {
+export default function AdminAppointmentForm({ auth, services, doctors }) {
     const { data, setData, post, processing, errors } = useForm({
         user_id: auth.user.id,
         name: auth.user.name,
@@ -21,16 +21,17 @@ export default function AppointmentForm({ auth, services, doctors }) {
         post(route("appointment.create.store"));
     };
     return (
-        <AuthenticatedLayout
+        <AdminAuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-lg md:text-xl text-gray-800 leading-tight">
-                    Set Appointment
-                </h2>
+                <div className="w-full flex justify-between items-center">
+                    <h2 className="font-semibold md:text-xl text-lg text-gray-800 leading-tight">
+                        Set Appointment
+                    </h2>
+                </div>
             }
         >
-            <Head title="Appointment" />
-
+            <Head title="Set Appointments" />
             <div className=" my-5 drop-shadow-lg rounded-md font-opensans px-5 w-full h-auto flex justify-center text-gray-800 |">
                 <div className="w-full md:w-[40vw] md:px-20 px-5 py-5 mt-4 bg-white | z-10">
                     <h1 className="text-xl md:text-2xl text-gray-800 md:py-5">
@@ -192,6 +193,6 @@ export default function AppointmentForm({ auth, services, doctors }) {
                     </form>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </AdminAuthenticatedLayout>
     );
 }

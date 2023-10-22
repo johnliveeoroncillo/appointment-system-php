@@ -17,7 +17,7 @@ const Services = () => {
                 <h1 className="py-5 text-3xl font-bold text-center">
                     Our Services
                 </h1>
-                <div className="md:flex md:space-x-10">
+                <div className="md:flex md:space-x-10 w-full justify-center">
                     <ServiceCard
                         image="images/checkup.png"
                         altText="image for general checkup"
@@ -27,7 +27,7 @@ const Services = () => {
                         title="General Checkup"
                         description="A physical examination is conducted to look for any signs of health issues. Depending on your age and risk factors, you may also have various tests and screenings. "
                     />
-                    <ServiceCard
+                    {/* <ServiceCard
                         image="images/confinement.png"
                         altText="image for confinement"
                         icon={
@@ -35,7 +35,7 @@ const Services = () => {
                         }
                         title="Confinement"
                         description="Patient stays in a hospital for medical treatment, care, or observation. During this time, individuals receive medical attention from healthcare professionals to diagnose, treat, or manage health conditions."
-                    />
+                    /> */}
                     <ServiceCard
                         image="images/hospitalization.png"
                         altText="image for hospitalization"
