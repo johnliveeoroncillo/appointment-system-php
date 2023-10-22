@@ -12,8 +12,8 @@ download the file and open in vs code
 ### For database
 ```
     php artisan migrate
-    php artisan db:seed --class=DoctorController
-    php artisan db:seed --class=SeederController
+    php artisan db:seed --class=DoctorSeeder
+    php artisan db:seed --class=ServiceSeeder
 
 ```
 
@@ -26,7 +26,3 @@ download the file and open in vs code
 ### Doctor
     email: doctor@example.com
     pass: 12345678
-
-
-    
-    
