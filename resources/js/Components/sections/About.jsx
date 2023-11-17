@@ -8,7 +8,7 @@ const About = () => {
     return (
         <>
             <div
-                className="w-full h-auto py-16 flex justify-center items-center flex-col bg-[#191919] text-textColor font-roboto"
+                className="w-full h-auto py-16 flex justify-center items-center flex-col bg-white text-gray-600 font-roboto"
                 id="about"
                 data-aos="fade-up"
             >
