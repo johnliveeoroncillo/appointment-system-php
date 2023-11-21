@@ -21,6 +21,8 @@ class Appointment extends Model
         'status',
         'user_id',
         'name',
+        'findings',
+        'prescription',
         'date',
         'time',
         'doctor_id',

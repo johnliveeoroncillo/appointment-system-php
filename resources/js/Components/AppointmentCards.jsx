@@ -10,6 +10,8 @@ export default function AppointmentCards({
     service,
     date,
     time,
+    findings,
+    prescription,
     status,
     onClick,
     onClickCancel,
@@ -34,7 +36,7 @@ export default function AppointmentCards({
             <div className="w-80 border border-gray-200 bg-white overflow-hidden rounded-xl shadow-sm font-serif">
                 {/* for pending */}
                 <div
-                    className={`w-full px-5 py-5  cursor-text ${getBackgroundColor()}`}
+                    className={`w-full px-5 py-5 h-full cursor-text ${getBackgroundColor()}`}
                 >
                     <small className="w-full flex justify-end py-1 text-gray-400">
                         {created_at}
@@ -47,9 +49,19 @@ export default function AppointmentCards({
                     </small>{" "}
                     <br />
                     <p className="py-2 font-medium">{service}</p>
-                    <p className="py-5">
+                    <p className="pt-5 pb-2">
                         <strong>Status:</strong> {status}
                     </p>
+                    {status === "Done" && (
+                        <>
+                            <p className="capitalize pb-2">
+                                <strong>Findings:</strong> {findings}
+                            </p>
+                            <p className="pb-5 capitalize">
+                                <strong>Prescription:</strong> {prescription}
+                            </p>
+                        </>
+                    )}
                     <div className="w-full flex gap-4  ">
                         {status === "Approved" && (
                             <div className="flex gap-4">

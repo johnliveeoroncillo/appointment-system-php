@@ -59,6 +59,10 @@ export default function AdminHistory({ auth, appointments }) {
                                         <th className="px-6 py-3">Name</th>
                                         <th className="px-6 py-3">Date</th>
                                         <th className="px-6 py-3">Time</th>
+                                        <th className="px-6 py-3">Findings</th>
+                                        <th className="px-6 py-3">
+                                            Prescription
+                                        </th>
                                         <th className="px-6 py-3">
                                             Requested At
                                         </th>
@@ -80,6 +84,12 @@ export default function AdminHistory({ auth, appointments }) {
                                             </td>
                                             <td className="px-6 py-4">
                                                 {item.formatted_time}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {item.findings}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {item.prescription}
                                             </td>
                                             <td className="px-6 py-4">
                                                 {item.formatted_created_at}

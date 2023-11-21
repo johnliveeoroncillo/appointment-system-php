@@ -57,6 +57,8 @@ export default function DoneAppointments({ auth, appointments }) {
                                         status={item.status === 2 ? "Done" : ""}
                                         onClick={() => openModal(item.id)}
                                         data={item}
+                                        findings={item.findings}
+                                        prescription={item.prescription}
                                     />
                                 ))}
                             {appointments

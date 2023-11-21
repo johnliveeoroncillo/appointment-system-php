@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreignIdFor(Service::class);
             $table->string('name');
             $table->string('email')->unique()->nullable();
+            $table->string('findings')->nullable();
+            $table->string('prescription')->nullable();
             $table->date('date');
             $table->time('time');
             $table->unsignedBigInteger('status')->default(0);

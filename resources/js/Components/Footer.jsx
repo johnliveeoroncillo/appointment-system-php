@@ -13,10 +13,10 @@ const Footer = () => {
             <div className="flex flex-col items-center w-full h-auto px-16 py-20 bg-primaryColor text-bgColor">
                 <footer className="flex flex-col items-center justify-center">
                     <button
-                        className="w-14 h-14 rounded-full bg-[#191919] z-20 -mt-28 flex items-center justify-center border-4"
+                        className="w-14 h-14 rounded-full bg-primaryColor z-20 -mt-28 flex items-center justify-center border-4 border-white"
                         onClick={goToTop}
                     >
-                        <ChevronUpIcon className="w-10 h-10 text-secondaryColor" />
+                        <ChevronUpIcon className="w-10 h-10 text-white" />
                     </button>
                     <img
                         className="w-44 h-auto | md:w-52"

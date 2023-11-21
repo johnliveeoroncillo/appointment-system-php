@@ -37,6 +37,8 @@ class AppointmentsController extends Controller
                 'appointments.doctor_id',
                 'appointments.date',
                 'appointments.time',
+                'appointments.findings',
+                'appointments.prescription',
                 'appointments.status',
                 'appointments.updated_at',
                 'doctors.name as doctor_name',
@@ -277,6 +279,8 @@ class AppointmentsController extends Controller
             'appointments.name',
             'appointments.date',
             'appointments.time',
+            'appointments.findings',
+            'appointments.prescription',
             'appointments.status',
             'appointments.created_at',
             'services.name as service_name',
@@ -310,6 +314,8 @@ class AppointmentsController extends Controller
             'appointments.name',
             'appointments.date',
             'appointments.time',
+            // 'appointments.findings',
+            // 'appointments.prescription',
             'appointments.status',
             'appointments.created_at',
             'services.name as service_name',
@@ -363,9 +369,14 @@ class AppointmentsController extends Controller
 
     public function markAsDone(Request $request, Appointment $appointment, $id)
     {
-        $appointment = Appointment::findOrFail($id);
 
-        DB::table('appointments')->where('id', $appointment['id'])->update(['status' => '2', 'updated_at' => now()]);
+        $validateData = $request->validate([
+            'findings' => 'required|string',
+            'prescription' => 'required|string'
+        ]);
+
+
+        DB::table('appointments')->where('id', $id)->update(['status' => '2', 'updated_at' => now(), 'findings' => $validateData['findings'], 'prescription' => $validateData['prescription']]);
 
         return redirect()->back();
     }
@@ -443,9 +454,13 @@ class AppointmentsController extends Controller
 
     public function markAsDoneAdmin(Request $request, Appointment $appointment, $id)
     {
-        $appointment = Appointment::findOrFail($id);
+        $validateData = $request->validate([
+            'findings' => 'required|string',
+            'prescription' => 'required|string'
+        ]);
 
-        DB::table('appointments')->where('id', $appointment['id'])->update(['status' => '2', 'updated_at' => now()]);
+
+        DB::table('appointments')->where('id', $id)->update(['status' => '2', 'updated_at' => now(), 'findings' => $validateData['findings'], 'prescription' => $validateData['prescription']]);
 
         return redirect()->back();
     }

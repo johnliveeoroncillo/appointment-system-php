@@ -1,6 +1,6 @@
 import Cards from "@/Components/Cards";
 import Table from "@/Components/Table";
-import { data, request } from "@/Constants";
+// import { data, request } from "@/Constants"; //fixed the dependencies error
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import {
     ChevronDoubleLeftIcon,

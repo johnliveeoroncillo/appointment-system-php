@@ -5,11 +5,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import Modal from "@/Components/Modal";
 import TextInput from "@/Components/TextInput";
+import InputLabel from "@/Components/InputLabel";
 
 function AdminMarkDone({ AppointmentSelectdId }) {
     const [isOpen, setIsOpen] = useState(false);
     const { data, setData, patch, processing, errors, reset } = useForm({
         id: "",
+        findings: "",
+        prescription: "",
     });
 
     const openModal = () => {
@@ -36,39 +39,51 @@ function AdminMarkDone({ AppointmentSelectdId }) {
         <>
             <div onClick={openModal}>Mark as done</div>
             <Modal show={isOpen} onClose={closeModal} maxWidth="md">
-                <form onSubmit={handleUpdate}>
-                    <div className="hidden">
+                <form onSubmit={handleUpdate} className="w-full">
+                    <div className="w-full  p-5">
+                        <InputLabel htmlFor="findings" value="Finding" />
                         <TextInput
-                            id="id"
+                            id="findings"
                             type="text"
-                            name="id"
-                            value={data.id}
-                            onChange={(e) => setData("id", e.target.value)}
+                            name="findings"
+                            value={data.findings}
+                            onChange={(e) =>
+                                setData("findings", e.target.value)
+                            }
+                            className="w-full"
                         />
                     </div>
-                    <div className="p-4 flex items-center justify-center flex-col">
-                        <div className="w-16 h-16 bg-red-100/50 flex items-center justify-center rounded-full">
-                            <ExclamationTriangleIcon className="w-10 h-10 text-yellow-300" />
-                        </div>
-                        <h1 className="text-3xl text-gray-600 font-semibold">
-                            Warning
-                        </h1>
-                        <p className="text-sm text-gray-500 text-center ">
-                            Ready to mark this appointment as done? Once
-                            confirmed, the status will be updated, and further
-                            changes may be limited.
-                        </p>
+                    <div className="w-full  p-5 pt-0">
+                        <InputLabel
+                            htmlFor="prescription"
+                            value="Prescription"
+                        />
+                        <TextInput
+                            id="prescription"
+                            type="text"
+                            name="prescription"
+                            value={data.prescription}
+                            onChange={(e) =>
+                                setData("prescription", e.target.value)
+                            }
+                            className="w-full"
+                        />
                     </div>
-                    <div className="p-4 flex w-full justify-center space-x-5 font-semibold">
-                        <button className="px-3 py-2 bg-yellow-400 text-white rounded-md hover:bg-yellow-300 w-36">
-                            Confirm
-                        </button>
+                    <div className="p-4 flex w-full justify-end space-x-5 font-semibold">
                         <button
                             type="button"
                             className="px-3 py-2 hover:bg-gray-200 text-gray-400 rounded w-36 bg-gray-100"
                             onClick={closeModal}
                         >
                             Cancel
+                        </button>
+                        <button
+                            className="px-3 py-2 bg-green-400 text-white rounded-md hover:bg-yellow-300 w-36"
+                            onClick={() => {
+                                console.log(data);
+                            }}
+                        >
+                            Mark as done
                         </button>
                     </div>
                 </form>
