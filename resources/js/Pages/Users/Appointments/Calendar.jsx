@@ -1,109 +1,126 @@
-// ... (your imports)
+import React, { useState } from "react";
+import AvailableTimes from "@/Components/AvailableTimes";
+import CalendarComponent from "@/Components/CalendarComponent";
+import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/InputError";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { useForm } from "@inertiajs/react";
 
-// import { generateDate, months } from "@/Constants/Calendar";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import dayjs from "dayjs";
-import { useState } from "react";
+export default function Calendar({ auth, services, doctors, user }) {
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [availableTimes, setAvailableTimes] = useState([]);
+    const { data, setData, post, processing, errors } = useForm({
+        user_id: user.user.id,
+        name: user.user.name,
+        date: "",
+        time: "",
+        doctor_id: "",
+        service_id: "",
+    });
 
-export default function Calendar() {
-    const days = ["S", "M", "T", "W", "T", "F", "S"];
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(data);
+        post(route("appointment.create.store"));
+    };
 
-    const currentDate = dayjs();
+    const handleDateChange = (date, times) => {
+        setSelectedDate(date);
+        setAvailableTimes(times);
 
-    const [dateToday, setDateToday] = useState(currentDate);
-
-    const [selectedDate, setSelectedDate] = useState(currentDate);
-
-    // const handleDateClick = (clickedDate) => {
-    //     setSelectedDate(clickedDate);
-    //     setDateToday(clickedDate);
-    // };
+        setData("date", date);
+        setData("time", times);
+    };
 
     return (
-        // <div className="w-full">
-        //     <h1 className="text-2xl font-bold font-sans">
-        //         {months[dateToday.month()]}, {dateToday.year()}
-        //     </h1>
-        //     <div className="flex w-full items-center gap-5">
-        //         <div className="w-10 h-10 rounded-full hover:bg-gray-200 flex items-center justify-center cursor-pointer">
-        //             <ChevronLeftIcon
-        //                 className="w-6 h-6 "
-        //                 onClick={() => {
-        //                     setDateToday(
-        //                         dateToday.month(dateToday.month() - 1)
-        //                     );
-        //                 }}
-        //             />
-        //         </div>
-        //         <div className="w-full">
-        //             <div className="w-full grid grid-cols-7 h-14 ">
-        //                 {days.map((day, index) => {
-        //                     return (
-        //                         <h1
-        //                             key={index}
-        //                             className="h-14 flex items-center justify-center font-bold "
-        //                         >
-        //                             {day}
-        //                         </h1>
-        //                     );
-        //                 })}
-        //             </div>
-        //             <div className="w-full grid grid-cols-7 place-content-center">
-        //                 {generateDate(dateToday.month(), dateToday.year()).map(
-        //                     ({ date, currentMonth, disabled }, index) => {
-        //                         return (
-        //                             <div
-        //                                 key={index}
-        //                                 className="h-14  flex items-center justify-center"
-        //                             >
-        //                                 <h1
-        //                                     className={`${
-        //                                         currentMonth
-        //                                             ? selectedDate
-        //                                                   .toDate()
-        //                                                   .toDateString() ===
-        //                                               date
-        //                                                   .toDate()
-        //                                                   .toDateString()
-        //                                                 ? "bg-primaryColor text-white"
-        //                                                 : disabled
-        //                                                 ? "text-gray-400 cursor-not-allowed bg-transparent "
-        //                                                 : "text-gray-700  hover:bg-gray-300"
-        //                                             : "text-gray-400"
-        //                                     } h-10 w-10 flex items-center justify-center rounded-full cursor-pointer `}
-        //                                     onClick={() => {
-        //                                         if (!disabled) {
-        //                                             setSelectedDate(date);
-        //                                             // handleDateClick(date);
-        //                                         }
-        //                                     }}
-        //                                 >
-        //                                     {date.date()}
-        //                                 </h1>
-        //                             </div>
-        //                         );
-        //                     }
-        //                 )}
-        //             </div>
-        //         </div>
-        //         <div className="w-10 h-10 rounded-full hover:bg-gray-200 flex items-center justify-center cursor-pointer">
-        //             <ChevronRightIcon
-        //                 className="w-6 h-6"
-        //                 onClick={() => {
-        //                     setDateToday(
-        //                         dateToday.month(dateToday.month() + 1)
-        //                     );
-        //                 }}
-        //             />
-        //         </div>
-        //     </div>
+        <div>
+            <h1>Doctor Appointment System</h1>
+            <form action="" onSubmit={handleSubmit}>
+                <div className="text-sm">
+                    <InputLabel htmlFor="name" value="Name" />
 
-        //     {/* <div>
-        //         <h1>
-        //             the Selected date is {selectedDate.toDate().toDateString()}
-        //         </h1>
-        //     </div> */}
-        // </div>
-        <>hello</>
+                    <input
+                        className="slide-up hidden border-2 mt-1 text-sm rounded-sm border-gray-300 w-full"
+                        type="text"
+                        id="user_id"
+                        name="user_id"
+                        value={data.user_id}
+                        placeholder="Enter your name"
+                        onChange={(e) => setData("name", e.target.value)}
+                    />
+                    <input
+                        className="slide-up border-2 mt-1 text-sm rounded-sm border-gray-300 w-full"
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={data.name}
+                        placeholder="Enter your name"
+                        onChange={(e) => setData("name", e.target.value)}
+                    />
+                    <InputError message={errors.name} className="mt-2" />
+                </div>
+                <div>
+                    <CalendarComponent
+                        // onDateChange={handleDateChange}
+                        onDateChange={data.date}
+                        errors={errors}
+                        id="date"
+                    />
+                    {selectedDate && (
+                        <AvailableTimes
+                            availableTimes={availableTimes}
+                            errors={errors}
+                        />
+                    )}
+                </div>
+                <div>
+                    <InputLabel htmlFor="doctor_id" value="Select Doctor" />
+                    <select
+                        name="doctor_id"
+                        id="doctor_id"
+                        value={data.doctor_id}
+                        onChange={(e) => setData("doctor_id", e.target.value)}
+                        className="border-2 slide-up mt-1 text-sm rounded-sm border-gray-300 w-full"
+                    >
+                        <option value="default" selected>
+                            Select Doctor
+                        </option>
+                        {doctors.map((doctor) => (
+                            <option key={doctor.id} value={doctor.id}>
+                                Dr. {doctor.name}
+                            </option>
+                        ))}
+                    </select>
+                    <InputError message={errors.doctor_id} className="mt-2" />
+                </div>
+                <div>
+                    <InputLabel htmlFor="service_id" value="Select Service" />
+                    <select
+                        name="service_id"
+                        id="service_id"
+                        value={data.service_id}
+                        onChange={(e) => setData("service_id", e.target.value)}
+                        className="slide-up border-2 mt-1 text-sm rounded-sm border-gray-300 w-full"
+                    >
+                        <option value="default" selected>
+                            Select Services
+                        </option>
+                        {services.map((service) => {
+                            return (
+                                <option key={service.id} value={service.id}>
+                                    {service.name}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    <InputError message={errors.service_id} className="mt-2" />
+                </div>
+                <div className="w-full flex justify-end">
+                    <PrimaryButton disabled={processing}>
+                        Set Appointment
+                    </PrimaryButton>
+                </div>
+            </form>
+        </div>
     );
 }

@@ -92,28 +92,67 @@ class AppointmentsController extends Controller
     }
 
 
+    // public function store(StoreAppointmentRequest $request)
+    // {
+    //     $appointment = $request->validated();
+
+    //     $appointment = Appointment::create($appointment);
+
+    //     $doctor = $appointment->doctor;
+    //     $user = $appointment->user;
+
+    //     // $doctor->notify(new AppointmentRequestNotification($appointment->user));
+
+    //     // return to_route('appointment.show')->with('message', 'Appointment has been created!');
+    //     if ($doctor) {
+    //         // Notify the doctor about the new appointment request
+    //         $doctor->notify(new AppointmentRequestNotification($doctor, $user));
+
+    //         return redirect()->route('appointment.show')->with('message', 'Appointment has been created!');
+    //     } else {
+    //         // Handle the case where there's no associated doctor
+    //         return redirect()->route('appointment.show')->with('message', 'No doctor associated with this appointment.');
+    //     }
+    // }
     public function store(StoreAppointmentRequest $request)
     {
-        $appointment = $request->validated();
+        // Validate the request data
+        $validatedData = $request->validated();
 
-        $appointment = Appointment::create($appointment);
+        // Check if an appointment already exists for the selected date and time
+        $existingAppointment = Appointment::where('date', $validatedData['date'])
+            ->where('time', $validatedData['time'])
+            ->first();
 
+        // If an existing appointment is found
+        if ($existingAppointment) {
+            // Check the status of the existing appointment
+            if ($existingAppointment->status == 1) {
+                // If status is 1, throw an error
+                return redirect()->back()->with('message', 'Appointment for this date and time already exists.');
+            } else {
+                // If status is not 1, do nothing and proceed to create a new appointment
+            }
+        }
+
+        // Create a new appointment
+        $appointment = Appointment::create($validatedData);
+
+        // Get the doctor and user
         $doctor = $appointment->doctor;
         $user = $appointment->user;
 
-        // $doctor->notify(new AppointmentRequestNotification($appointment->user));
-
-        // return to_route('appointment.show')->with('message', 'Appointment has been created!');
+        // Notify the doctor about the new appointment request
         if ($doctor) {
-            // Notify the doctor about the new appointment request
             $doctor->notify(new AppointmentRequestNotification($doctor, $user));
-
             return redirect()->route('appointment.show')->with('message', 'Appointment has been created!');
         } else {
             // Handle the case where there's no associated doctor
             return redirect()->route('appointment.show')->with('message', 'No doctor associated with this appointment.');
         }
     }
+
+
 
 
     public function show(Appointment $appointment)

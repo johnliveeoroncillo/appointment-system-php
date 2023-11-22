@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import InputLabel from "./InputLabel";
-import { router, useForm } from "@inertiajs/react";
+import { router, useForm, usePage } from "@inertiajs/react";
 import InputError from "./InputError";
 import { toast } from "react-toastify";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
+import { useEffect } from "react";
 
 const RescheduleModal = ({ appointmentList }) => {
+    const [validationError, setValidationError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data, setData, patch, processing, errors } = useForm({
         id: appointmentList.id,
@@ -31,6 +33,15 @@ const RescheduleModal = ({ appointmentList }) => {
         setIsModalOpen(false);
     };
 
+    const { message } = usePage().props.flash;
+
+    useEffect(() => {
+        // Set the flashed message to validationError state
+        if (message) {
+            setValidationError(message);
+        }
+    }, [message]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         router.patch(
@@ -44,9 +55,44 @@ const RescheduleModal = ({ appointmentList }) => {
                         className: "toast-success",
                     });
                 },
+                // onError: (error) => {
+                //     if (error.response.status === 422) {
+                //         // Display the validation error in the frontend
+                //         setValidationError(error.response.data.message);
+                //     }
+                // },
             }
         );
     };
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     router.patch(
+    //         route("appointment.update", { id: appointmentList.id }),
+    //         data,
+    //         {
+    //             onSuccess: (response) => {
+    //                 console.log("triggered");
+    //                 if (response.status === 200) {
+    //                     // Success status, update was successful
+    //                     toast.success("Schedule successfully updated!!", {
+    //                         position: toast.POSITION.BOTTOM_RIGHT,
+    //                         className: "toast-success",
+    //                     });
+    //                 } else {
+    //                     // Handle other success statuses if needed
+    //                 }
+    //             },
+    //             onError: (error) => {
+    //                 if (error.response.status === 422) {
+    //                     // Display the validation error in the frontend
+    //                     setValidationError(error.response.data.message);
+    //                 }
+    //             },
+    //         }
+    //     );
+    // };
+
+    const today = new Date().toISOString().split("T")[0];
 
     return (
         <div>
@@ -62,6 +108,11 @@ const RescheduleModal = ({ appointmentList }) => {
                         <h1 className="text-2xl font-semibold pb-5">
                             Reschedule
                         </h1>
+                        {/* {validationError && (
+                                <div className="text-red-500 text-xs text-center">
+                                    <p>{validationError}</p>
+                                </div>
+                            )} */}
                         <div className="space-y-5">
                             <div>
                                 <InputLabel
@@ -81,6 +132,7 @@ const RescheduleModal = ({ appointmentList }) => {
                                     className="border-2 border-gray-300 w-full rounded-md slide-up"
                                     value={data.date}
                                     onChange={handleChange}
+                                    min={today}
                                 />
                                 <InputError
                                     message={errors.date}
@@ -89,7 +141,7 @@ const RescheduleModal = ({ appointmentList }) => {
                             </div>
                             <div>
                                 <InputLabel
-                                    htmlFor="date"
+                                    htmlFor="time"
                                     value="Update Time"
                                 />
                                 <select
@@ -97,7 +149,7 @@ const RescheduleModal = ({ appointmentList }) => {
                                     id="time"
                                     value={data.time}
                                     onChange={handleChange}
-                                    className="slide-up block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-secondaryColor placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondaryColor sm:text-sm sm:leading-6 "
+                                    className="slide-up block w-full rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm border-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 "
                                 >
                                     <option value="default" selected>
                                         --Select Time--
