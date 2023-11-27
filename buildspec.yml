@@ -1,0 +1,19 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+  pre_build:
+    commands:
+      - echo "copying env file from aws parameter store.."
+      - echo "${REGION}"
+      - echo "${PROJECT}"
+      - echo "${STAGE}"
+      - PARAMETER="/${PROJECT}/${STAGE}"
+      - echo "${PARAMETER}"
+      - DEST_FILENAME=".env"
+      - aws ssm get-parameter --name $PARAMETER --region $REGION --output text --query Parameter.Value > $DEST_FILENAME
+      - ls .env
+artifacts:
+  files:
+    - '**/*'
