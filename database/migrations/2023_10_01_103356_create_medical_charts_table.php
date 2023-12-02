@@ -23,14 +23,14 @@ return new class extends Migration
             $table->string('height');
             $table->string('weight');
             $table->bigInteger('bp');
-            $table->string('illness');
-            $table->longText('physical_exam');
-            $table->longText('medical_history');
-            $table->string('allergies');
-            $table->longText('family_history');
-            $table->longText('social_history');
-            $table->longText('diagnosis');
-            $table->longText('plan');
+            $table->string('illness')->nullable();
+            $table->longText('physical_exam')->nullable();
+            $table->longText('medical_history')->nullable();
+            $table->string('allergies')->nullable();
+            $table->longText('family_history')->nullable();
+            $table->longText('social_history')->nullable();
+            $table->longText('diagnosis')->nullable();
+            $table->longText('plan')->nullable();
             $table->timestamps();
         });
     }

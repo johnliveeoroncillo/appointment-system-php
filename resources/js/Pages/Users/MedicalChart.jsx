@@ -107,7 +107,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     Illness
                                 </h1>
                                 <p className="text-xs md:text-sm">
-                                    {medicalChart.illness}
+                                    {medicalChart.illness || "N/A"}
                                 </p>
                             </div>
                         </div>
@@ -117,7 +117,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     Physical Exam
                                 </h1>
                                 <p className="text-xs md:text-sm">
-                                    {medicalChart.physical_exam}
+                                    {medicalChart.physical_exam || "N/A"}
                                 </p>
                             </div>
                             <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
@@ -125,7 +125,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     Medical History
                                 </h1>
                                 <p className="text-xs md:text-sm">
-                                    {medicalChart.medical_history}
+                                    {medicalChart.medical_history || "N/A"}
                                 </p>
                             </div>
                             <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
@@ -133,7 +133,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     Allergies
                                 </h1>
                                 <p className="text-xs md:text-sm">
-                                    {medicalChart.allergies}
+                                    {medicalChart.allergies || "N/A"}
                                 </p>
                             </div>
                             <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
@@ -141,7 +141,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     Family History
                                 </h1>
                                 <p className="text-xs md:text-sm">
-                                    {medicalChart.family_history}
+                                    {medicalChart.family_history || "N/A"}
                                 </p>
                             </div>
                             <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
@@ -149,7 +149,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     Social History
                                 </h1>
                                 <p className="text-xs md:text-sm">
-                                    {medicalChart.social_history}
+                                    {medicalChart.social_history || "N/A"}
                                 </p>
                             </div>
                             <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
@@ -157,7 +157,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     Diagnosis
                                 </h1>
                                 <p className="text-xs md:text-sm">
-                                    {medicalChart.diagnosis}
+                                    {medicalChart.diagnosis || "N/A"}
                                 </p>
                             </div>
                             <div className="bg-white w-full px-5 py-3 mb-1 rounded-md border border-gray-300">
@@ -165,7 +165,7 @@ export default function MedicalChart({ auth, medicalChart }) {
                                     Plan
                                 </h1>
                                 <p className="text-xs md:text-sm">
-                                    {medicalChart.plan}
+                                    {medicalChart.plan || "N/A"}
                                 </p>
                             </div>
                         </div>

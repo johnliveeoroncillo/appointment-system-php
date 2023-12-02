@@ -112,7 +112,7 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 className="slide-up w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
                                             >
                                                 <option value="default">
-                                                    --Select Gender--
+                                                    --Select Sex--
                                                 </option>
                                                 <option value="male">
                                                     Male

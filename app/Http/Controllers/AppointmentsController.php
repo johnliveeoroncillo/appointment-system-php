@@ -207,6 +207,7 @@ class AppointmentsController extends Controller
             )
                 ->join('services', 'appointments.service_id', '=', 'services.id')
                 ->where('status', 0)
+                ->orderBy('created_at', 'desc')
                 ->paginate(6);
             $appointments->transform(function ($appointment) {
                 $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
@@ -326,6 +327,7 @@ class AppointmentsController extends Controller
         )
             ->join('services', 'appointments.service_id', '=', 'services.id')
             ->where('status', 2)
+            ->orderBy('desc')
             ->paginate(6);
         $appointments->transform(function ($appointment) {
             $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
@@ -361,6 +363,7 @@ class AppointmentsController extends Controller
         )
             ->join('services', 'appointments.service_id', '=', 'services.id')
             ->where('status', 3)
+            ->orderBy('desc')
             ->paginate(6);
         $appointments->transform(function ($appointment) {
             $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
@@ -470,6 +473,7 @@ class AppointmentsController extends Controller
         )
             ->join('services', 'appointments.service_id', '=', 'services.id')
             ->where('status', 1)
+            ->orderBy('desc')
             ->paginate(6);
         $appointments->transform(function ($appointment) {
             $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
@@ -502,5 +506,24 @@ class AppointmentsController extends Controller
         DB::table('appointments')->where('id', $id)->update(['status' => '2', 'updated_at' => now(), 'findings' => $validateData['findings'], 'prescription' => $validateData['prescription']]);
 
         return redirect()->back();
+    }
+
+
+    // app/Http/Controllers/AppointmentController.php
+    public function getAppointmentsAndTimes($date)
+    {
+        $existingAppointments = Appointment::where('date', $date)->get();
+        $availableTimes = $this->getAvailableTimes($date);
+
+        return [
+            'existingAppointments' => $existingAppointments,
+            'availableTimes' => $availableTimes,
+        ];
+    }
+
+    private function getAvailableTimes($date)
+    {
+        // Your logic to fetch available times
+        // Return an array of available times
     }
 }
