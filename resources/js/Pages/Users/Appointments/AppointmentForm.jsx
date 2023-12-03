@@ -8,15 +8,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 export default function AppointmentForm({ auth, services, doctors }) {
-    const doctorID = doctors.data || "";
-
     const [validationError, setValidationError] = useState(null);
+
     const { data, setData, post, processing, errors } = useForm({
         user_id: auth.user.id,
         name: auth.user.name,
         date: "",
         time: "",
-        doctor_id: doctorID,
+        doctor_id: "1",
         service_id: "",
     });
 
@@ -31,6 +30,7 @@ export default function AppointmentForm({ auth, services, doctors }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(data);
         post(route("appointment.create.store"), {
             onError: (error) => {
                 if (error.response.status === 422) {
@@ -156,28 +156,6 @@ export default function AppointmentForm({ auth, services, doctors }) {
                                         className="mt-2"
                                     />
                                 </div>
-                            </div>
-                            {/* doctor */}
-                            <div>
-                                <InputLabel
-                                    htmlFor="doctor_id"
-                                    value=" Doctor"
-                                />
-                                {doctors.map((doctor) => (
-                                    <input
-                                        key={doctor.id}
-                                        value="Dr. Vicente Lao"
-                                        className="slide-up border-2 mt-1 text-sm rounded-sm border-gray-300 w-full"
-                                        type="text"
-                                        id="doctor_id"
-                                        name="doctor_id"
-                                        readOnly
-                                    />
-                                ))}
-                                <InputError
-                                    message={errors.doctor_id}
-                                    className="mt-2"
-                                />
                             </div>
                             {/* service */}
                             <div>

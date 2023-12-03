@@ -30,6 +30,7 @@ export default function MedicalChartForm({ auth, medicalChart }) {
         e.preventDefault();
         post(route("medical-chart.store"));
     };
+
     const handleOnChange = (event) => {
         const { name, value } = event.target;
         setData({ ...data, [name]: value });
@@ -162,7 +163,7 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 name="height"
                                                 className="w-full"
                                                 value={data.height}
-                                                placeholder="Height"
+                                                placeholder="e.g: 5'2"
                                                 onChange={handleOnChange}
                                             />
                                         </div>
@@ -183,7 +184,7 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 name="weight"
                                                 className="w-full"
                                                 value={data.weight}
-                                                placeholder="Weight"
+                                                placeholder="e.g: 123 or 45.43"
                                                 onChange={handleOnChange}
                                             />
                                             <InputError
@@ -203,7 +204,7 @@ export default function MedicalChartForm({ auth, medicalChart }) {
                                                 name="bp"
                                                 className="w-full"
                                                 value={data.bp}
-                                                placeholder="Blood Pressure"
+                                                placeholder="e.g: 120/80"
                                                 onChange={handleOnChange}
                                             />
                                             <InputError

@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 export default function AdminAppointmentRequests({ appointments, auth }) {
     const { flash } = usePage().props;
-    const appointmentList = appointments.data || "";
+    const appointmentList = appointments.data || [];
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -47,7 +47,11 @@ export default function AdminAppointmentRequests({ appointments, auth }) {
                                     {appointmentList.map((item) => (
                                         <tr
                                             key={item.id}
-                                            className="bg-white border-b border-gray-300 hover:bg-gray-50"
+                                            className={`${
+                                                item.status === 0
+                                                    ? "bg-green-200 hover:bg-green-100"
+                                                    : ""
+                                            } bg-white border-b border-gray-300 hover:bg-gray-50`}
                                         >
                                             <td className="px-6 py-4">
                                                 {item.name}

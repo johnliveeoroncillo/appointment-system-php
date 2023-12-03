@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedInteger('age');
             $table->string('height');
             $table->string('weight');
-            $table->bigInteger('bp');
+            $table->string('bp');
             $table->string('illness')->nullable();
             $table->longText('physical_exam')->nullable();
             $table->longText('medical_history')->nullable();
