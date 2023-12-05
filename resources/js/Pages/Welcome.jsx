@@ -1,4 +1,4 @@
- Footer from "@/Components/Footer";
+import Footer from "@/Components/Footer";
 import About from "@/Components/sections/About";
 import Doctor from "@/Components/sections/Doctor";
 import Hero from "@/Components/sections/Hero";
@@ -17,5 +17,6 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 <About />
                 <Footer />
             </div>
-        </>    );
+        </>
+    );
 }
