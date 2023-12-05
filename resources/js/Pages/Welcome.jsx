@@ -9,14 +9,6 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const userExist = auth.user;
     return (
         <>
-            <Head title="Home" />
-            <div>
-                <Hero checkuser={userExist} />
-                <Doctor />
-                <Services />
-                <About />
-                <Footer />
-            </div>
-        </>
+            <
     );
 }
