@@ -1,4 +1,4 @@
-import Footer from "@/Components/Footer";
+ Footer from "@/Components/Footer";
 import About from "@/Components/sections/About";
 import Doctor from "@/Components/sections/Doctor";
 import Hero from "@/Components/sections/Hero";
@@ -9,6 +9,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const userExist = auth.user;
     return (
         <>
-            <
-    );
+            <Head title="Home" />
+            <div>
+                <Hero checkuser={userExist} />
+                <Doctor />
+                <Services />
+                <About />
+                <Footer />
+            </div>
+        </>    );
 }
