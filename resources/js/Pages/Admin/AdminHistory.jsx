@@ -1,10 +1,13 @@
 import AdminDeleteModal from "@/Components/AdminDeleteModal";
+import AppointmentCardMAD from "@/Components/AppointmentCardMAD";
 import Cards from "@/Components/Cards";
 import Pagination from "@/Components/PaginationButton";
 import ViewDetails from "@/Components/ViewDetails";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import React, { useState } from "react";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 import { toast } from "react-toastify";
 
 export default function AdminHistory({ auth, appointments }) {
@@ -31,6 +34,12 @@ export default function AdminHistory({ auth, appointments }) {
             position: toast.POSITION.BOTTOM_RIGHT,
         });
     };
+
+    const printReciept = useRef();
+
+    const handlePrint = useReactToPrint({
+        content: () => printReciept.current,
+    });
     return (
         <AdminAuthenticatedLayout
             user={auth.user}
@@ -101,7 +110,7 @@ export default function AdminHistory({ auth, appointments }) {
                                                         : ""}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4">
+                                            <td className="px-6 py-4 flex gap-5">
                                                 <button
                                                     onClick={() =>
                                                         openModal(item.id)
@@ -110,7 +119,83 @@ export default function AdminHistory({ auth, appointments }) {
                                                 >
                                                     Delete
                                                 </button>
+                                                <button
+                                                    onClick={handlePrint}
+                                                    className="text-gray-400 hover:text-gray-600"
+                                                >
+                                                    Print
+                                                </button>
                                             </td>
+                                            <div className="w-[35rem] h-[35rem] hidden print">
+                                                <div
+                                                    ref={printReciept}
+                                                    className=" bg-white px-5 py-5 shadow-md printable-content"
+                                                >
+                                                    <div className="printable border-2 border-gray-700 h-full w-full p-5">
+                                                        <div className=" printable-header flex gap-16">
+                                                            <img
+                                                                className="w-14 h-14"
+                                                                src="https://th.bing.com/th/id/R.7bc6f156fc9627e6c95e2a41dce0c3f2?rik=iiUhlhCNY5PgBQ&riu=http%3a%2f%2fcdn.onlinewebfonts.com%2fsvg%2fimg_529438.png&ehk=9XpFSti%2bVVUR6LlddBdHPQqTEtZrgF0EuB3A4P9Ml7k%3d&risl=&pid=ImgRaw&r=0"
+                                                                alt=""
+                                                            />
+
+                                                            <div className="">
+                                                                <p className="pb-1">
+                                                                    <strong>
+                                                                        Patient:
+                                                                    </strong>{" "}
+                                                                    {item.name}
+                                                                </p>
+                                                                <p className="pb-2">
+                                                                    <strong>
+                                                                        Address:
+                                                                    </strong>{" "}
+                                                                    {item.address ||
+                                                                        "N/A"}{" "}
+                                                                </p>
+                                                                <p>
+                                                                    <strong>
+                                                                        Date:
+                                                                    </strong>{" "}
+                                                                    {
+                                                                        item.formatted_date
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="printable-main-content border-y-4 border-black my-5 py-5">
+                                                            <div className="printable-sub-content h-32">
+                                                                <strong>
+                                                                    Findings:
+                                                                </strong>
+                                                                <p>
+                                                                    {
+                                                                        item.findings
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                            <div className="printable-sub-content h-32">
+                                                                <strong>
+                                                                    Presprciption:
+                                                                </strong>
+                                                                <p>
+                                                                    {
+                                                                        item.prescription
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="doctor-signature">
+                                                            <p className="w-52 text-center font-bold">
+                                                                Dr. Vicente Lao
+                                                            </p>
+                                                            <p className="w-52 border-t-2 border-black text-center">
+                                                                Signature
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -154,6 +239,45 @@ export default function AdminHistory({ auth, appointments }) {
                     />
                 </div>
             </div>
+            <style jsx>{`
+                @media print {
+                    body {
+                        font-size: 12pt;
+                        background-color: red;
+                        height: 50vh;
+                    }
+
+                    .printable-content {
+                        background-color: white;
+                        height: 100vh;
+                        width: 100vw;
+                        display: grid;
+                        place-content: center;
+                    }
+
+                    .printable-header {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                    }
+                    .printable {
+                        height: 100vh;
+                        width: 100vw;
+                        padding: 80px 100px;
+                    }
+
+                    .printable-main-content {
+                        height: 50vh;
+                        width: 100%;
+                    }
+
+                    .printable-sub-content {
+                        height: 250px;
+                    }
+                    .doctor-signature {
+                        margin-top: 50px;
+                    }
+                }
+            `}</style>{" "}
         </AdminAuthenticatedLayout>
     );
 }

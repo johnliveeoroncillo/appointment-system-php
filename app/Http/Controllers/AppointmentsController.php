@@ -91,29 +91,6 @@ class AppointmentsController extends Controller
         }
     }
 
-
-    // public function store(StoreAppointmentRequest $request)
-    // {
-    //     $appointment = $request->validated();
-
-    //     $appointment = Appointment::create($appointment);
-
-    //     $doctor = $appointment->doctor;
-    //     $user = $appointment->user;
-
-    //     // $doctor->notify(new AppointmentRequestNotification($appointment->user));
-
-    //     // return to_route('appointment.show')->with('message', 'Appointment has been created!');
-    //     if ($doctor) {
-    //         // Notify the doctor about the new appointment request
-    //         $doctor->notify(new AppointmentRequestNotification($doctor, $user));
-
-    //         return redirect()->route('appointment.show')->with('message', 'Appointment has been created!');
-    //     } else {
-    //         // Handle the case where there's no associated doctor
-    //         return redirect()->route('appointment.show')->with('message', 'No doctor associated with this appointment.');
-    //     }
-    // }
     public function store(StoreAppointmentRequest $request)
     {
         // Validate the request data
@@ -207,6 +184,7 @@ class AppointmentsController extends Controller
             )
                 ->join('services', 'appointments.service_id', '=', 'services.id')
                 ->where('status', 0)
+                ->orderBy('created_at', 'desc')
                 ->paginate(6);
             $appointments->transform(function ($appointment) {
                 $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
@@ -326,6 +304,7 @@ class AppointmentsController extends Controller
         )
             ->join('services', 'appointments.service_id', '=', 'services.id')
             ->where('status', 2)
+            ->orderBy('created_at', 'desc')
             ->paginate(6);
         $appointments->transform(function ($appointment) {
             $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
@@ -361,6 +340,7 @@ class AppointmentsController extends Controller
         )
             ->join('services', 'appointments.service_id', '=', 'services.id')
             ->where('status', 3)
+            ->orderBy('created_at', 'desc')
             ->paginate(6);
         $appointments->transform(function ($appointment) {
             $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
@@ -470,6 +450,7 @@ class AppointmentsController extends Controller
         )
             ->join('services', 'appointments.service_id', '=', 'services.id')
             ->where('status', 1)
+            ->orderBy('created_at', 'desc')
             ->paginate(6);
         $appointments->transform(function ($appointment) {
             $appointment->formatted_date = Carbon::parse($appointment->date)->format('D. M. d, Y');
@@ -502,5 +483,18 @@ class AppointmentsController extends Controller
         DB::table('appointments')->where('id', $id)->update(['status' => '2', 'updated_at' => now(), 'findings' => $validateData['findings'], 'prescription' => $validateData['prescription']]);
 
         return redirect()->back();
+    }
+
+
+    // app/Http/Controllers/AppointmentController.php
+    public function getAppointmentsAndTimes($date)
+    {
+        $existingAppointments = Appointment::where('date', $date)->get();
+        $availableTimes = $this->getAvailableTimes($date);
+
+        return [
+            'existingAppointments' => $existingAppointments,
+            'availableTimes' => $availableTimes,
+        ];
     }
 }

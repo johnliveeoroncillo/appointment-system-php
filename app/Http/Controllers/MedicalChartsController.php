@@ -6,6 +6,9 @@ use App\Models\MedicalChart;
 use App\Http\Requests\StoreMedicalChartRequest;
 use App\Http\Requests\UpdateMedicalChartRequest;
 use App\Models\User;
+use App\Rules\BPFormat;
+use App\Rules\HeightFormat;
+use App\Rules\WeightFormat;
 use Faker\Provider\Medical;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -63,9 +66,9 @@ class MedicalChartsController extends Controller
             'name' => 'required|string|max:255',
             'gender' => 'required|string',
             'age' => 'required|integer',
-            'height' => 'required|integer',
-            'weight' => 'required|integer',
-            'bp' => 'nullable|integer',
+            'height' => ['required', new HeightFormat],
+            'weight' =>  ['required', new WeightFormat],
+            'bp' => ['required', new BPFormat],
             'illness' => 'nullable|string',
             'physical_exam' => 'nullable|string',
             'medical_history' => 'nullable|string',

@@ -9,14 +9,14 @@ import { useEffect } from "react";
 
 export default function AppointmentForm({ auth, services, doctors }) {
     const [validationError, setValidationError] = useState(null);
+
     const { data, setData, post, processing, errors } = useForm({
         user_id: auth.user.id,
         name: auth.user.name,
         date: "",
         time: "",
-        doctor_id: "",
+        doctor_id: "1",
         service_id: "",
-        due_date: "",
     });
 
     const { message } = usePage().props.flash;
@@ -30,6 +30,7 @@ export default function AppointmentForm({ auth, services, doctors }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(data);
         post(route("appointment.create.store"), {
             onError: (error) => {
                 if (error.response.status === 422) {
@@ -155,38 +156,6 @@ export default function AppointmentForm({ auth, services, doctors }) {
                                         className="mt-2"
                                     />
                                 </div>
-                            </div>
-                            {/* doctor */}
-                            <div>
-                                <InputLabel
-                                    htmlFor="doctor_id"
-                                    value="Select Doctor"
-                                />
-                                <select
-                                    name="doctor_id"
-                                    id="doctor_id"
-                                    value={data.doctor_id}
-                                    onChange={(e) =>
-                                        setData("doctor_id", e.target.value)
-                                    }
-                                    className="border-2 slide-up mt-1 text-sm rounded-sm border-gray-300 w-full"
-                                >
-                                    <option value="default" selected>
-                                        Select Doctor
-                                    </option>
-                                    {doctors.map((doctor) => (
-                                        <option
-                                            key={doctor.id}
-                                            value={doctor.id}
-                                        >
-                                            Dr. {doctor.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                <InputError
-                                    message={errors.doctor_id}
-                                    className="mt-2"
-                                />
                             </div>
                             {/* service */}
                             <div>
