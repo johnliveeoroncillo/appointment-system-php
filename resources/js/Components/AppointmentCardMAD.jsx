@@ -76,7 +76,7 @@ export default function AppointmentCardMAD({
             <style jsx>{`
                 @media print {
                     body {
-                        font-size: 12pt;
+                        font-size: 18pt;
                         background-color: red;
                         height: 50vh;
                     }
