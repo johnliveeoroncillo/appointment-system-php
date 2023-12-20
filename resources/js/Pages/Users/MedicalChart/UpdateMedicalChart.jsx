@@ -37,6 +37,24 @@ export default function UpdateMedicalChart({ auth, medicalChart }) {
     const handleOnChange = (event) => {
         const { name, value } = event.target;
         setData({ ...data, [name]: value });
+
+        if (name === "height") {
+            const updatedValue =
+                value.length === 1 && value.charAt(value.length - 1) !== "'"
+                    ? value + "'"
+                    : value.length === 0
+                    ? ""
+                    : value;
+            setData({
+                ...data,
+                [name]: updatedValue,
+            });
+        } else {
+            setData({
+                ...data,
+                [name]: value,
+            });
+        }
     };
 
     return (
@@ -73,7 +91,11 @@ export default function UpdateMedicalChart({ auth, medicalChart }) {
                                     />
                                 </div>
                                 <div className="">
-                                    <InputLabel htmlFor="name" value="Name" />
+                                    <InputLabel
+                                        htmlFor="name"
+                                        value="Name"
+                                        important="*"
+                                    />
                                     <TextInput
                                         type="text"
                                         id="name"
@@ -95,6 +117,7 @@ export default function UpdateMedicalChart({ auth, medicalChart }) {
                                             <InputLabel
                                                 htmlFor="genter"
                                                 value="Gender"
+                                                important="*"
                                             />
                                             <select
                                                 name="gender"
@@ -130,6 +153,7 @@ export default function UpdateMedicalChart({ auth, medicalChart }) {
                                             <InputLabel
                                                 htmlFor="age"
                                                 value="Age"
+                                                important="*"
                                             />
                                             <TextInput
                                                 id="age"
@@ -153,6 +177,7 @@ export default function UpdateMedicalChart({ auth, medicalChart }) {
                                             <InputLabel
                                                 htmlFor="height"
                                                 value="Height"
+                                                important="*"
                                             />
                                             <TextInput
                                                 id="height"
@@ -174,6 +199,7 @@ export default function UpdateMedicalChart({ auth, medicalChart }) {
                                             <InputLabel
                                                 htmlFor="weight"
                                                 value="Weight"
+                                                important="*"
                                             />
                                             <TextInput
                                                 id="weight"
@@ -194,6 +220,7 @@ export default function UpdateMedicalChart({ auth, medicalChart }) {
                                             <InputLabel
                                                 htmlFor="bp"
                                                 value="Blood Pressure"
+                                                important="*"
                                             />
                                             <TextInput
                                                 id="bp"

@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\BPFormat;
+use App\Rules\HeightFormat;
+use App\Rules\WeightFormat;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateMedicalChartRequest extends FormRequest
@@ -26,9 +29,9 @@ class UpdateMedicalChartRequest extends FormRequest
             'name' => ['string', 'max:255'],
             'gender' => ['required', 'string', 'max:255'],
             'age' => ['required', 'integer',],
-            'height' => ['required', 'integer',],
-            'weight' => ['required', 'integer',],
-            'bp' => ['integer',],
+            'height' => ['required', new HeightFormat],
+            'weight' =>  ['required', new WeightFormat],
+            'bp' => ['required', new BPFormat],
             'illness' => ['string', 'nullable', 'max:255'],
             'physical_exam' => ['string', 'nullable', 'max:255'],
             'medical_history' => ['string', 'nullable', 'max:255'],
@@ -37,8 +40,6 @@ class UpdateMedicalChartRequest extends FormRequest
             'social_history' => ['string', 'nullable', 'max:255'],
             'diagnosis' => ['string', 'nullable', 'max:255'],
             'plan' => ['string', 'nullable', 'max:255'],
-
-
         ];
     }
 }
